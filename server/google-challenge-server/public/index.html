@@ -31,40 +31,48 @@
 			from: 1,
 			to: 1572562800
 		},
-		success: function(data, status, jqXHR){
-			console.log(data)
+		success: function(resp, status, jqXHR){
+			console.log(resp)
+			if(resp.success && resp.data.length > 0){
+				resp.data.sort(function(a,b){return a.timestamp - b.timestamp;});
+				var center = {lat: 0, lon: 0};
+				var heatmapData = [];
+				for(var pos of resp.data){
+					center.lat += pos.lat;
+					center.lon += pos.lon;
+					heatmapData.push(new google.maps.LatLng(pos.lat, pos.lon));
+				}
+				center.lat = center.lat/resp.data.length;
+				center.lon = center.lon / resp.data.length;
+				map = new google.maps.Map(document.getElementById('map'), {
+				  center: new google.maps.LatLng(center.lat, center.lon),
+				  zoom: 13,
+				  mapTypeId: 'satellite'
+				});
+				
+				var marker = new google.maps.Marker({
+				  position: heatmapData[heatmapData.length -1],
+				  map: map,
+				  title: 'Hello World!'
+				});
+				
+				var flightPath = new google.maps.Polyline({
+				  path: heatmapData,
+				  geodesic: true,
+				  strokeColor: '#FF0000',
+				  strokeOpacity: 1.0,
+				  strokeWeight: 2
+				});
+				flightPath.setMap(map);
+
+				var heatmap = new google.maps.visualization.HeatmapLayer({
+				  data: heatmapData
+				});
+				heatmap.setMap(map);
+			}
 		}
 	  })
-       /* Data points defined as an array of LatLng objects */
-		var heatmapData = [
-		  new google.maps.LatLng(37.782, -122.447),
-		  new google.maps.LatLng(37.782, -122.445),
-		  new google.maps.LatLng(37.782, -122.443),
-		  new google.maps.LatLng(37.782, -122.441),
-		  new google.maps.LatLng(37.782, -122.439),
-		  new google.maps.LatLng(37.782, -122.437),
-		  new google.maps.LatLng(37.782, -122.435),
-		  new google.maps.LatLng(37.785, -122.447),
-		  new google.maps.LatLng(37.785, -122.445),
-		  new google.maps.LatLng(37.785, -122.443),
-		  new google.maps.LatLng(37.785, -122.441),
-		  new google.maps.LatLng(37.785, -122.439),
-		  new google.maps.LatLng(37.785, -122.437),
-		  new google.maps.LatLng(37.785, -122.435)
-		];
 
-		var sanFrancisco = new google.maps.LatLng(37.774546, -122.433523);
-
-		map = new google.maps.Map(document.getElementById('map'), {
-		  center: sanFrancisco,
-		  zoom: 13,
-		  mapTypeId: 'satellite'
-		});
-
-		var heatmap = new google.maps.visualization.HeatmapLayer({
-		  data: heatmapData
-		});
-		heatmap.setMap(map);
       }
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-K78ab9peD-QQomR8t5ZpuAWbpnbSAM4&callback=initMap&libraries=visualization"
