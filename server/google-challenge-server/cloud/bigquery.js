@@ -26,7 +26,7 @@ const listPositions = (params, callback) => {
                 query += sep+ "id IN (";
                 let lSep = "";
                 for(let id in params.id){
-                    query+= lSep + id;
+                    query+= lSep + mysql.escape(id.toString());
                     lSep = ", ";
                 }
                 query +=")"; 
@@ -36,7 +36,7 @@ const listPositions = (params, callback) => {
             }
         }
         else{
-            query += sep + "id = "+mysql.escape(params.id);
+            query += sep + "id = "+mysql.escape(params.id.toString());
         }
         sep = " AND ";
     }
