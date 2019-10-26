@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Simple Map</title>
+    <meta name="viewport" content="initial-scale=1.0">
+    <meta charset="utf-8">
+    <style>
+      /* Always set the map height explicitly to define the size of the div
+       * element that contains the map. */
+      #map {
+        height: 100%;
+      }
+      /* Optional: Makes the sample page fill the window. */
+      html, body {
+        height: 100%;
+        margin: 0;
+        padding: 0;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="map"></div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
+    <script>
+      var map;
+      function initMap() {
+	  $.ajax({
+		type: "POST",
+		url: '/query/query',
+		data: {
+			from: 1,
+			to: 1572562800
+		},
+		success: function(data, status, jqXHR){
+			console.log(data)
+		}
+	  })
+       /* Data points defined as an array of LatLng objects */
+		var heatmapData = [
+		  new google.maps.LatLng(37.782, -122.447),
+		  new google.maps.LatLng(37.782, -122.445),
+		  new google.maps.LatLng(37.782, -122.443),
+		  new google.maps.LatLng(37.782, -122.441),
+		  new google.maps.LatLng(37.782, -122.439),
+		  new google.maps.LatLng(37.782, -122.437),
+		  new google.maps.LatLng(37.782, -122.435),
+		  new google.maps.LatLng(37.785, -122.447),
+		  new google.maps.LatLng(37.785, -122.445),
+		  new google.maps.LatLng(37.785, -122.443),
+		  new google.maps.LatLng(37.785, -122.441),
+		  new google.maps.LatLng(37.785, -122.439),
+		  new google.maps.LatLng(37.785, -122.437),
+		  new google.maps.LatLng(37.785, -122.435)
+		];
+
+		var sanFrancisco = new google.maps.LatLng(37.774546, -122.433523);
+
+		map = new google.maps.Map(document.getElementById('map'), {
+		  center: sanFrancisco,
+		  zoom: 13,
+		  mapTypeId: 'satellite'
+		});
+
+		var heatmap = new google.maps.visualization.HeatmapLayer({
+		  data: heatmapData
+		});
+		heatmap.setMap(map);
+      }
+    </script>
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-K78ab9peD-QQomR8t5ZpuAWbpnbSAM4&callback=initMap&libraries=visualization"
+    async defer></script>
+  </body>
+</html>
