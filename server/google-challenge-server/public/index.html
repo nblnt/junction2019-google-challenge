@@ -20,9 +20,21 @@
   </head>
   <body>
     <div id="map"></div>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
       var map;
       function initMap() {
+	  $.ajax({
+		type: "POST",
+		url: '/query/query',
+		data: {
+			from: 1,
+			to: 1572562800
+		},
+		success: function(data, status, jqXHR){
+			console.log(data)
+		}
+	  })
        /* Data points defined as an array of LatLng objects */
 		var heatmapData = [
 		  new google.maps.LatLng(37.782, -122.447),
@@ -55,7 +67,7 @@
 		heatmap.setMap(map);
       }
     </script>
-    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyCrkh_dcsAYA8lcyyMilm81NLnFZ_VxX6I&callback=initMap&libraries=visualization"
+    <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-K78ab9peD-QQomR8t5ZpuAWbpnbSAM4&callback=initMap&libraries=visualization"
     async defer></script>
   </body>
 </html>

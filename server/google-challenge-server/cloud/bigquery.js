@@ -8,7 +8,7 @@ const bigquery = new BigQuery({
 const table = "juctionxbp2019-loremipsum.animals.animals_stringid";
 
 const queryPositionsByTime = (from, to, callback) => {
-    const query = 'SELECT id, lat, lon, timestamp FROM `'+table+'` WHERE timestamp => ' + mysql.escape(from) + ' AND timesatmp <= '+mysql.escape(to);
+    const query = 'SELECT id, lat, lon, timestamp FROM `'+table+'` WHERE timestamp > ' + parseInt(from) + ' AND timestamp < '+parseInt(to);
 	bigquery.query(query, callback);
 }
 
