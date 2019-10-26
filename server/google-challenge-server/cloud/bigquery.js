@@ -29,7 +29,7 @@ const search = (params, callback) => {
             query += sep+ "id IN (";
             let lSep = "";
             for(let id in params.id){
-                query+= lSep + id;
+                query+= lSep + '"' + id + '"';
                 lSep = ", ";
             }
             query +=")";
@@ -46,7 +46,7 @@ const search = (params, callback) => {
     else{
         callback(null,[]);
     }
-}
+};
 
 const queryPositionsById = (id, callback) => {
 	const query = 'SELECT id, lat, lon, timestamp FROM `'+table+'` WHERE id = "' + id +'"';
