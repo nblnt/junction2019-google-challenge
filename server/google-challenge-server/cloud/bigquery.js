@@ -2,6 +2,16 @@ const {BigQuery} = require('@google-cloud/bigquery');
 const mysql = require('mysql');
 const async = require('async');
 
+const escape = (data) => {
+    if(typeof data === "string"){
+        return '"'+data+'"';
+        //return mysql.escape(data);
+    }
+    else{
+        return data;
+    }
+}
+
 const bigquery = new BigQuery({
 	projectId: "juctionxbp2019-loremipsum",
 	keyFilename: "./keys/JuctionXBP2019-LoremIpsum-ac684918aab9.json"
@@ -26,7 +36,7 @@ const listPositions = (params, callback) => {
                 query += sep+ "id IN (";
                 let lSep = "";
                 for(let id in params.id){
-                    query+= lSep + mysql.escape(id.toString());
+                    query+= lSep + escape(id.toString());
                     lSep = ", ";
                 }
                 query +=")";
@@ -36,7 +46,7 @@ const listPositions = (params, callback) => {
             }
         }
         else{
-            query += sep + "id = "+mysql.escape(params.id.toString());
+            query += sep + "id = "+escape(params.id.toString());
         }
         sep = " AND ";
     }
@@ -53,33 +63,60 @@ const listGroups = (params, callback) => {
     let query = 'SELECT name, species FROM `'+table+'` WHERE ';
     let sep = "";
     if(params.name){
-        query += sep + "name = "+mysql.escape(params.name);
-        sep = " AND ";
+        if(Array.isArray(params.name)){
+            if(params.name.length > 0){
+                query += sep + 'name IN (';
+                let inSep ="";
+                for(let name of params.name){
+                    query += inSep + escape(name);
+                    inSep = ", ";
+                }
+                query += ")";
+                sep = " AND ";
+            }
+        }
+        else{
+            query += sep + "name = "+escape(params.name);
+            sep = " AND ";
+        }
     }
     else if(params.namelike){
-        query += sep + 'name LIKE'+mysql.escape("%"+params.namelike+"%");
+        query += sep + 'name LIKE'+escape("%"+params.namelike+"%");
         sep = " AND ";
     }
 
     if(params.species){
-        query += sep + "species = "+mysql.escape(params.species);
-        sep = " AND ";
+        if(Array.isArray(params.species)){
+            if(params.species.length > 0){
+                query += sep + 'species IN (';
+                let inSep ="";
+                for(let species of params.species){
+                    query += inSep + escape(species);
+                    inSep = ", ";
+                }
+                query += ")";
+                sep = " AND ";
+            }
+        }
+        else{
+            query += sep + "species = "+escape(params.species);
+            sep = " AND ";
+        }
     }
     else if(params.specieslike){
-        query += sep + "species LIKE "+mysql.escape("%"+ params.specieslike+"%");
+        query += sep + "species LIKE "+escape("%"+ params.specieslike+"%");
         sep = " AND ";
     }
 
     if(sep === ""){
         query += " 1 = 1";
     }
-
     bigquery.query(query, callback);
 }
 
 const listDeviceInfos = (params, callback) => {
     const table = "juctionxbp2019-loremipsum.animals.animalgroup";
-    let query = 'SELECT id, name FROM `'+table+'` WHERE '
+    let query = 'SELECT id, groupname FROM `'+table+'` WHERE '
     let skip = false;
     let andSep = "";
     if(params.groupname){
@@ -87,10 +124,10 @@ const listDeviceInfos = (params, callback) => {
         andSep = " AND ";
         if(Array.isArray(params.groupname)){
             if(params.groupname.length > 0){
-                query += " IN (";
+                query += "groupname IN (";
                 let sep = "";
                 for(let name of params.groupname){
-                    query += sep+mysql.escape(name);
+                    query += sep+escape(name);
                     sep= ", ";
                 }
                 query += ")";
@@ -100,7 +137,7 @@ const listDeviceInfos = (params, callback) => {
             }
         }
         else{
-            query += " = "+ mysql.escape(params.groupname);
+            query += " = "+ escape(params.groupname);
         }
     }
     if(params.id){
@@ -108,10 +145,10 @@ const listDeviceInfos = (params, callback) => {
         andSep = " AND ";
         if(Array.isArray(params.id)){
             if(params.id.length > 0){
-                query += " IN (";
+                query += "id IN (";
                 let sep = "";
-                for(let idS of params.id){
-                    query += sep+mysql.escape(idS);
+                for(let id of params.id){
+                    query += sep+escape(id);
                     sep= ", ";
                 }
                 query += ")";
@@ -121,7 +158,7 @@ const listDeviceInfos = (params, callback) => {
             }
         }
         else{
-            query += " = "+ mysql.escape(params.id);
+            query += " = "+ escape(params.id);
         }
     }
 
