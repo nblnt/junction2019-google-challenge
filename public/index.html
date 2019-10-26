@@ -14,50 +14,96 @@
 <link href="datepicker/css/datepicker.min.css" rel="stylesheet" type="text/css" />
 <!-- inject css end -->
 
+<script type="text/javascript" src="http://code.jquery.com/jquery-latest.min.js"></script>
+
 </head>
 <body>
 
-<div class="split-left">
-    <div class="header d-flex justify-content-between">
-        <div class="d-flex">
-            <img class="logo" src="images/li_logo.svg" alt="Lorem Ipsum logo">
-            <span class="project-name">Trackimal</span>
+<div class="header d-flex justify-content-between">
+    <div class="d-flex">
+        <img class="logo" src="images/li_logo.svg" alt="Lorem Ipsum logo">
+        <span class="project-name">Trackimal</span>
+    </div>
+    <div class="d-flex">
+        <div class="nav-item d-flex align-items-center">
+            <a href="#">Historical</a>
         </div>
-        <div class="d-flex">
-            <div class="nav-item d-flex align-items-center">
-                <a href="#">Historical</a>
-            </div>
-            <div class="nav-item d-flex align-items-center">
-                <a href="#">Online</a>
-            </div>
-            <div class="nav-item d-flex align-items-center">
-                Region<div class="arrow-down"></div>
-            </div>
+        <div class="nav-item d-flex align-items-center">
+            <a href="#">Online</a>
+        </div>
+        <div class="nav-item d-flex align-items-center">
+            Region<div class="arrow-down"></div>
         </div>
     </div>
-    
+</div>
+
+<div class="split-left">
     <div class="datepicker-container">
         <div class="text-1 colored1 xs-mt mini-pb">Pick a date</div>
         <hr class="devider-gray"><hr class="devider-green"><br>
         <div class="container xxs-my no-padding">
-            <div class="row align-items-center xxs-mb">
+            <div class="row align-items-center xxs-mb datepickers">
                 <div class="col-4 align-self-center">
                     <div class="label">Start date:</div>
                 </div>
                 <div class="col-8 align-self-center">
-                    <input type='text' class='datepicker-here' data-language='en' />
+                    <input id='datepicker1' onfocusout="checkDatepicker();" type='text' class='datepicker-here' data-language='en' />
                 </div>
             </div>
-            <div class="row align-items-center xxs-mb">
+            <div class="row align-items-center xxs-mb datepickers">
                 <div class="col-4 align-self-center">
                     <div class="label">End date:</div>
                 </div>
                 <div class="col-8 align-self-center">
-                    <input type='text' class='datepicker-here' data-language='en' />
+                    <input id='datepicker2' onfocusout="checkDatepicker();" type='text' class='datepicker-here' data-language='en' />
+                </div>
+            </div>
+            <div class="row align-items-center xxs-mb">
+                <div class="col-4 align-self-center">
+                    <div class="classic_checkbox">
+                        <input type="checkbox" value="checkday" id="checkboxDay" name="checkday"><label for="checkboxDay">Daytime</label>
+                    </div>
+                </div>
+                <div class="col-8 align-self-center">
+                    <div class="classic_checkbox">
+                        <input type="checkbox" value="checknight" id="checkboxNight" name="checknight"><label for="checkboxNight">Nighttime</label>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
+
+    <div class="typepicker-container">
+        <div class="text-1 colored1 xs-mt mini-pb">Pick an animal type</div>
+        <hr class="devider-gray"><hr class="devider-green"><br>
+        <div class="container xxs-my no-padding">
+            <div class="row align-items-center xxs-mb">
+                <div class="col-4 align-self-center">
+                    <div class="classic_checkbox">
+                        <input type="checkbox" value="checkone" id="checkboxOne" name="checkone"><label for="checkboxOne">Dog</label>
+                    </div>
+                </div>
+                <div class="col-8 align-self-center">
+                    <div class="classic_checkbox">
+                        <input type="checkbox" value="checktwo" id="checkboxTwo" name="checktwo"><label for="checkboxTwo">Duck</label>
+                    </div>
+                </div>
+            </div>
+            <div class="row align-items-center xxs-mb">
+                <div class="col-4 align-self-center">
+                    <div class="classic_checkbox">
+                        <input type="checkbox" value="checkthree" id="checkboxThree" name="checkthree"><label for="checkboxThree">Peacock</label>
+                    </div>
+                </div>
+                <div class="col-8 align-self-center">
+                    <div class="classic_checkbox">
+                        <input type="checkbox" value="checkfour" id="checkboxFour" name="checkfour"><label for="checkboxFour">Unicorn</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
 </div>
 
 <div class="split-right">

@@ -111,11 +111,11 @@ script{
 /* Split the screen */
 
 .split-left{
-    height: calc(100% - 80px);
+    height: calc(100% - 150px);
     width: 40%;
     position: fixed;
     z-index: 1;
-    top: 0;
+    top: 70px;
     left: 0;
     overflow-x: hidden;
     /* background-image: url("images/left-bg.png"); */
@@ -126,11 +126,11 @@ script{
 }
 
 .split-right{
-    height: calc(100% - 80px);
+    height: calc(100% - 150px);
     width: 60%;
     position: fixed;
     z-index: 1;
-    top: 0;
+    top: 70px;
     right: 0;
     overflow-x: hidden;
     /* padding: 10px; */
@@ -149,10 +149,13 @@ script{
 }
 
 .header{
-    position: relative;
+    position: fixed;
     padding: 15px 10px;
     height: 70px;
     width: 100%;
+    z-index: 2;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
 }
 
 .project-name{
@@ -199,6 +202,11 @@ script{
     margin: auto;
 }
 
+.typepicker-container{
+    width: 90%;
+    margin: auto;
+}
+
 .text-1{
     font-size: 24px;
     font-weight: 800;
@@ -228,13 +236,13 @@ script{
 
 .datepicker-here:focus{
     outline-color: #0000;
-    border-radius: 10px;
-    border: 2px solid #1b8b00;
+    border-radius: 6px;
+    border: 1px solid #1b8b00;
 }
 
 .datepicker-here{
     border: 1px solid #bebebe;
-    border-radius: 10px;
+    border-radius: 6px;
     height: 40px;
     width: 140px;
     font-size: 16px;
@@ -243,7 +251,15 @@ script{
     font-family: 'Open Sans', sans-serif !important;
     letter-spacing: -0.8px;
     font-weight: 500;
-    background-image: linear-gradient(to top right, #a2d240, #1b8b00 );
+    /* background-image: linear-gradient(to top right, #a2d240, #1b8b00 ); */
+}
+
+.datepickers:empty{
+    background-color: none;
+}
+
+.datepickers:not(:empty){
+    background-color: "#1b8b00";
 }
 
 .datepicker-here:hover{
@@ -255,4 +271,93 @@ script{
     width: 60%;
     height: 100%;
     width:100%;
+}
+.classic_checkbox{
+    width: 110px;
+    font-size: 14px;
+    height: 30px;
+    position: relative;
+    background: transparent;
+    display: inline-block;
+}
+
+.classic_checkbox label{
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: white;
+    border-radius: 5px;
+    border:1px solid #ccc;
+    line-height: 28px;
+    text-indent: 36px;
+    white-space: nowrap;
+}
+
+.classic_checkbox label:after{
+    content: 'L';
+    width: 18px;
+    color:white;
+    text-align: center;
+    line-height: 16px;
+    font-weight: 900;
+    transform:rotateY(180deg) rotateZ(-45deg);
+    height: 18px;
+    position: absolute;
+    text-indent: 0;
+    top: 4px;
+    left: 3px;
+    opacity: 0;
+}
+
+.classic_checkbox input[type=checkbox]{
+    visibility: hidden;
+}
+
+.classic_checkbox input[type=checkbox]:checked + label:after{
+    opacity: 1;
+}
+
+.classic_checkbox input[type=checkbox]:checked + label,
+.classic_checkbox:hover label{
+    border: 1px solid #1b8b00;
+}
+
+.classic_checkbox input[type=checkbox]:checked + label{
+    background-image: linear-gradient(to top right, #a2d240, #1b8b00 );
+}
+
+.classic_checkbox.radio label{
+    border-radius:100%;
+    text-indent: 35px;
+    line-height: 25px;
+}
+
+.classic_checkbox input[type=radio]{
+    visibility: hidden;
+    display: none;
+}
+
+.classic_checkbox input[type=radio]:checked + label:after{
+    opacity: 1;
+}
+
+.classic_checkbox input[type=radio]:checked + label,
+.classic_checkbox:hover label{
+    border: 1px solid #1b8b00;
+}
+
+.classic_checkbox input[type=radio]:checked + label{
+    background-image: linear-gradient(to top right, #a2d240, #1b8b00 );
+}
+
+.classic_checkbox.over{
+    width: 60px;
+    text-align: center;
+}
+
+.classic_checkbox.over label{
+    position: relative;
 }
