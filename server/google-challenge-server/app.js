@@ -5,6 +5,8 @@ const logger = require('morgan');
 const bodyParser = require('body-parser');
 
 const indexRouter = require('./routes/index');
+const queryRouter = require('./routes/query');
+const searchRouter = require('./routes/search');
 
 const app = express();
 
@@ -15,7 +17,10 @@ app.use(cookieParser());
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true }));
 
-app.use('/', indexRouter);
+app.use('/', express.static('public'));
+app.use('/query', queryRouter);
+app.use('/search', searchRouter);
+//app.use('/', indexRouter);
 
 const port = process.env.port || 4000;
 app.listen(port);
