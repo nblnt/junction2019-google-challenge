@@ -9,7 +9,7 @@ const bigquery = new BigQuery({
 
 const listPositions = (params, callback) => {
     const table = "juctionxbp2019-loremipsum.animals.animals_stringid";
-    const query = 'SELECT id, lat, lon, timestamp FROM `'+table+'` WHERE ';
+    let query = 'SELECT id, lat, lon, timestamp FROM `'+table+'` WHERE ';
     let sep = "";
     let skip = false;
     if(params.from){
@@ -50,7 +50,7 @@ const listPositions = (params, callback) => {
 
 const listGroups = (params, callback) => {
     const table = "juctionxbp2019-loremipsum.animals.groups";
-    const query = 'SELECT name, species FROM `'+table+'` WHERE ';
+    let query = 'SELECT name, species FROM `'+table+'` WHERE ';
     let sep = "";
     if(params.name){
         query += sep + "name = "+mysql.escape(params.name);
@@ -79,7 +79,7 @@ const listGroups = (params, callback) => {
 
 const listDeviceInfos = (params, callback) => {
     const table = "juctionxbp2019-loremipsum.animals.animalgroup";
-    const query = 'SELECT id, name FROM `'+table+'` WHERE '
+    let query = 'SELECT id, name FROM `'+table+'` WHERE '
     let skip = false;
     let andSep = "";
     if(params.groupname){
@@ -132,9 +132,23 @@ const listDeviceInfos = (params, callback) => {
         bigquery.query(query, callback);
     }
 }
+let countDevices = (params, callback) => {
+    const table = "juctionxbp2019-loremipsum.animals.animals_stringid";
+    let query = 'SELECT id, MAX(timestamp) AS timestamp FROM `'+table+'` WHERE ';
+    if(params.from){
+        query += 'timestamp >= '+ parseInt(params.from);
+    }
+    else{
+        query += "1=1";
+    }
+    query += " GROUP BY id"
+    bigquery.query(query, callback);
+}
+
 
 module.exports = {
     listPositions: listPositions,
     listGroups: listGroups,
-    listDeviceInfos: listDeviceInfos
+    listDeviceInfos: listDeviceInfos,
+    countDevices: countDevices
 }
