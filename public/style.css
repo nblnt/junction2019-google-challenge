@@ -1,0 +1,87 @@
+body, html {
+    padding: 0;
+    margin: 0;
+    width: 100%;
+    height: 100%;
+    background-color: #eee;
+}
+
+#main {
+    max-width: 1200px;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 20px;
+}
+
+.map-container{
+    flex-grow: 1;
+}
+
+.left-container{
+    max-width: 50%;
+}
+
+#map {
+    height: 100%;
+    width: 100%;
+}
+
+.main-menu{
+    width: 100%;
+    border-bottom: 3px solid white;
+    height: 50px;
+    background-color: #404040
+}
+
+.menu-item{
+    color: white;
+    cursor: pointer;
+}
+
+
+
+.controls{
+    margin-right: 20px;
+    line-height: 50px;
+}
+
+.active{
+    color: forestgreen;
+}
+
+.logo{
+    height: 45px;
+}
+
+.counter-box{
+    border: 1px solid #fff;
+    height: 190px;
+}
+
+.counter-value{
+    font-size: 60pt;
+}
+
+.counter-title {
+    font-size: 20pt;
+}
+
+
+.bg-first{
+    background-color: #BF0F50;
+    color: white;
+}
+
+.bg-second{
+    background-color: #F28627;
+    color: white;
+}
+
+.bg-third{
+    background-color: #2F7373;
+    color: white
+}
+
+.bg-fourth{
+    background-color: #404040
+}
