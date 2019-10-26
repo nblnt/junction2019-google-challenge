@@ -4,7 +4,6 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const bodyParser = require('body-parser');
 
-const indexRouter = require('./routes/index');
 const queryRouter = require('./routes/query');
 const searchRouter = require('./routes/search');
 
@@ -20,7 +19,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', express.static('public'));
 app.use('/query', queryRouter);
 app.use('/search', searchRouter);
-//app.use('/', indexRouter);
 
 const port = process.env.port || 4000;
 app.listen(port);
