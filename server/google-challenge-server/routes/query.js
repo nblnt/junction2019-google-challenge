@@ -13,7 +13,7 @@ router.post('/query', (req, res) => {
             res.json({success:false, err: util.format(err)});
         }
         else{
-            res.json({success: true, data:[]});
+            res.json({success: true, data:data});
         }
     });
   }
