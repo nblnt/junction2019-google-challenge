@@ -30,10 +30,10 @@ const topic = pubsubClient.topic(topicName);
 	  return topic.publish(data);
  });*/
  
- exports.toPubSub = functions.region('europe-west1').database.instance('juctionxbp2019-loremipsum').ref('/location/{devId}')
+ exports.toPubSub = functions.region('europe-west1').database.instance('juctionxbp2019-loremipsum').ref('/locations/{devId}')
     .onWrite((snapshot, context) => {
       // Grab the current value of what was written to the Realtime Database.
-      const original = snapshot.toJSON();
+	  const original = (snapshot.after) ? snapshot.after.toJSON() : snapshot.toJSON();
 	  if(original.time && original.latitude && original.longitude && context.params.devId){
 		  console.log('snapshot', original, context.params);
 		  const rec = {

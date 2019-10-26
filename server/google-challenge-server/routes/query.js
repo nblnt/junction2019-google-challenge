@@ -5,7 +5,7 @@ const util = require('util');
 
 router.post('/', (req, res) => {
   if(req.body.from && req.body.to){
-    bigquery.queryPositionsByTime(req.body.from,req.body.to,function (err, data){
+    bigquery.listPositions(req.body,function (err,data){
         if(err){
             console.log(err);
             res.json({success:false, err: util.format(err)});
