@@ -6,6 +6,7 @@ const bodyParser = require('body-parser');
 
 const queryRouter = require('./routes/query');
 const searchRouter = require('./routes/search');
+const summaryRouter = require('./routes/summary');
 
 const app = express();
 
@@ -19,6 +20,7 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use('/', express.static('public'));
 app.use('/query', queryRouter);
 app.use('/search', searchRouter);
+app.use('/summary', summaryRouter);
 
 const port = process.env.port || 4000;
 app.listen(port);
