@@ -132,6 +132,7 @@ const listDeviceInfos = (params, callback) => {
         bigquery.query(query, callback);
     }
 }
+
 let countDevices = (params, callback) => {
     const table = "juctionxbp2019-loremipsum.animals.animals_stringid";
     let query = 'SELECT id, MAX(timestamp) AS timestamp FROM `'+table+'` WHERE ';
