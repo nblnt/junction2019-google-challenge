@@ -57,7 +57,7 @@ const listGroups = (params, callback) => {
         sep = " AND ";
     }
     else if(params.namelike){
-        query += sep + "name LIKE %"+mysql.escape(params.namelike)+"%";
+        query += sep + 'name LIKE'+mysql.escape("%"+params.namelike+"%");
         sep = " AND ";
     }
 
@@ -66,7 +66,7 @@ const listGroups = (params, callback) => {
         sep = " AND ";
     }
     else if(params.specieslike){
-        query += sep + "species LIKE %"+mysql.escape(params.specieslike)+"%";
+        query += sep + "species LIKE "+mysql.escape("%"+ params.specieslike+"%");
         sep = " AND ";
     }
 
@@ -132,9 +132,23 @@ const listDeviceInfos = (params, callback) => {
         bigquery.query(query, callback);
     }
 }
+let countDevices = (params, callback) => {
+    const table = "juctionxbp2019-loremipsum.animals.animals_stringid";
+    let query = 'SELECT id, MAX(timestamp) AS timestamp FROM `'+table+'` WHERE ';
+    if(params.from){
+        query += 'timestamp >= '+ parseInt(params.from);
+    }
+    else{
+        query += "1=1";
+    }
+    query += " GROUP BY id"
+    bigquery.query(query, callback);
+}
+
 
 module.exports = {
     listPositions: listPositions,
     listGroups: listGroups,
-    listDeviceInfos: listDeviceInfos
+    listDeviceInfos: listDeviceInfos,
+    countDevices: countDevices
 }
