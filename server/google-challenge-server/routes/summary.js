@@ -69,7 +69,6 @@ router.use('/currentDevices', (req, res) => {
                     for (let i of idTimestamps) {
                         if (i.id && i.timestamp) {
                             let filtered = allRecordFrom.filter(x => x.id === i.id && x.timestamp === i.timestamp);
-                            console.log('filter ok');
                             allData.push({
                                 id: filtered[0].id,
                                 lat: filtered[0].lat,
