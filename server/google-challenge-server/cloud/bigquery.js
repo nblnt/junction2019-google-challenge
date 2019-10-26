@@ -57,7 +57,7 @@ const listGroups = (params, callback) => {
         sep = " AND ";
     }
     else if(params.namelike){
-        query += sep + "name LIKE %"+mysql.escape(params.namelike)+"%";
+        query += sep + 'name LIKE'+mysql.escape("%"+params.namelike+"%");
         sep = " AND ";
     }
 
@@ -66,7 +66,7 @@ const listGroups = (params, callback) => {
         sep = " AND ";
     }
     else if(params.specieslike){
-        query += sep + "species LIKE %"+mysql.escape(params.specieslike)+"%";
+        query += sep + "species LIKE "+mysql.escape("%"+ params.specieslike+"%");
         sep = " AND ";
     }
 
