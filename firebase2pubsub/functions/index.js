@@ -30,7 +30,7 @@ const topic = pubsubClient.topic(topicName);
 	  return topic.publish(data);
  });*/
  
- exports.toPubSub = functions.database.instance('trackimal').ref('/location/{devId}')
+ exports.toPubSub = functions.region('europe-west1').database.instance('juctionxbp2019-loremipsum').ref('/location/{devId}')
     .onWrite((snapshot, context) => {
       // Grab the current value of what was written to the Realtime Database.
       const original = snapshot.toJSON();
