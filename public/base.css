@@ -134,6 +134,7 @@ script{
     right: 0;
     overflow-x: hidden;
     /* padding: 10px; */
+    border: 1px solid black;
 }
 
 .timeline{
@@ -233,13 +234,13 @@ script{
 
 .datepicker-here:focus{
     outline-color: #0000;
-    border-radius: 10px;
-    border: 2px solid #1b8b00;
+    border-radius: 6px;
+    border: 1px solid #1b8b00;
 }
 
 .datepicker-here{
     border: 1px solid #bebebe;
-    border-radius: 10px;
+    border-radius: 6px;
     height: 40px;
     width: 140px;
     font-size: 16px;
@@ -248,7 +249,15 @@ script{
     font-family: 'Open Sans', sans-serif !important;
     letter-spacing: -0.8px;
     font-weight: 500;
-    background-image: linear-gradient(to top right, #a2d240, #1b8b00 );
+    /* background-image: linear-gradient(to top right, #a2d240, #1b8b00 ); */
+}
+
+.datepickers:empty{
+    background-color: none;
+}
+
+.datepickers:not(:empty){
+    background-color: "#1b8b00";
 }
 
 .datepicker-here:hover{
@@ -258,9 +267,8 @@ script{
 
 .classic_checkbox{
     width: 110px;
-    font-size:14px;
+    font-size: 14px;
     height: 30px;
-    margin:6px;
     position: relative;
     background: transparent;
     display: inline-block;
@@ -307,11 +315,11 @@ script{
 
 .classic_checkbox input[type=checkbox]:checked + label,
 .classic_checkbox:hover label{
-    border:1px solid #1b8b00;
+    border: 1px solid #1b8b00;
 }
 
 .classic_checkbox input[type=checkbox]:checked + label{
-    background:#1b8b00;
+    background-image: linear-gradient(to top right, #a2d240, #1b8b00 );
 }
 
 .classic_checkbox.radio label{
@@ -331,11 +339,11 @@ script{
 
 .classic_checkbox input[type=radio]:checked + label,
 .classic_checkbox:hover label{
-    border:1px solid #1b8b00;
+    border: 1px solid #1b8b00;
 }
 
 .classic_checkbox input[type=radio]:checked + label{
-    background:#1b8b00;
+    background-image: linear-gradient(to top right, #a2d240, #1b8b00 );
 }
 
 .classic_checkbox.over{
