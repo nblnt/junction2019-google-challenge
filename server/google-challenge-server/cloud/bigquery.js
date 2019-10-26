@@ -35,8 +35,8 @@ const listPositions = (params, callback) => {
             if(params.id.length > 0){
                 query += sep+ "id IN (";
                 let lSep = "";
-                for(let id in params.id){
-                    query+= lSep + escape(id.toString());
+                for(let i in params.id){
+                    query+= lSep + escape(params.id[i].toString());
                     lSep = ", ";
                 }
                 query +=")";
@@ -51,6 +51,7 @@ const listPositions = (params, callback) => {
         sep = " AND ";
     }
     if(sep !== "" || skip){
+        //console.log(query)
         bigquery.query(query, callback);
     }
     else{
@@ -111,6 +112,7 @@ const listGroups = (params, callback) => {
     if(sep === ""){
         query += " 1 = 1";
     }
+    //console.log(query)
     bigquery.query(query, callback);
 }
 
@@ -137,7 +139,7 @@ const listDeviceInfos = (params, callback) => {
             }
         }
         else{
-            query += " = "+ escape(params.groupname);
+            query += "groupname = "+ escape(params.groupname);
         }
     }
     if(params.id){
@@ -158,7 +160,7 @@ const listDeviceInfos = (params, callback) => {
             }
         }
         else{
-            query += " = "+ escape(params.id);
+            query += "id = "+ escape(params.id);
         }
     }
 
@@ -166,6 +168,7 @@ const listDeviceInfos = (params, callback) => {
         async.setImmediate(callback, null, []);
     }
     else{
+        //console.log(query)
         bigquery.query(query, callback);
     }
 }
@@ -179,7 +182,9 @@ let countDevices = (params, callback) => {
     else{
         query += "1=1";
     }
-    query += " GROUP BY id"
+    query += " GROUP BY id";
+
+    //console.log(query);
     bigquery.query(query, callback);
 }
 
