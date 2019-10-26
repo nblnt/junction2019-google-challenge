@@ -22,9 +22,171 @@
     <div id="map"></div>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.4.1/jquery.min.js"></script>
     <script>
-      var map;
-      function initMap() {
-	  $.ajax({
+    var map;
+	var heatmap;
+	var markers = [];
+	var polylines = [];
+
+	var styledMapType = new google.maps.StyledMapType(
+  [
+    {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
+    {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
+    {elementType: 'labels.text.stroke', stylers: [{color: '#f5f1e6'}]},
+    {
+      featureType: 'administrative',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#c9b2a6'}]
+    },
+    {
+      featureType: 'administrative.land_parcel',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#dcd2be'}]
+    },
+    {
+      featureType: 'administrative.land_parcel',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#ae9e90'}]
+    },
+    {
+      featureType: 'landscape.natural',
+      elementType: 'geometry',
+      stylers: [{color: '#dfd2ae'}]
+    },
+    {
+      featureType: 'poi',
+      elementType: 'geometry',
+      stylers: [{color: '#dfd2ae'}]
+    },
+    {
+      featureType: 'poi',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#93817c'}]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'geometry.fill',
+      stylers: [{color: '#a5b076'}]
+    },
+    {
+      featureType: 'poi.park',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#447530'}]
+    },
+    {
+      featureType: 'road',
+      elementType: 'geometry',
+      stylers: [{color: '#f5f1e6'}]
+    },
+    {
+      featureType: 'road.arterial',
+      elementType: 'geometry',
+      stylers: [{color: '#fdfcf8'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry',
+      stylers: [{color: '#f8c967'}]
+    },
+    {
+      featureType: 'road.highway',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#e9bc62'}]
+    },
+    {
+      featureType: 'road.highway.controlled_access',
+      elementType: 'geometry',
+      stylers: [{color: '#e98d58'}]
+    },
+    {
+      featureType: 'road.highway.controlled_access',
+      elementType: 'geometry.stroke',
+      stylers: [{color: '#db8555'}]
+    },
+    {
+      featureType: 'road.local',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#806b63'}]
+    },
+    {
+      featureType: 'transit.line',
+      elementType: 'geometry',
+      stylers: [{color: '#dfd2ae'}]
+    },
+    {
+      featureType: 'transit.line',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#8f7d77'}]
+    },
+    {
+      featureType: 'transit.line',
+      elementType: 'labels.text.stroke',
+      stylers: [{color: '#ebe3cd'}]
+    },
+    {
+      featureType: 'transit.station',
+      elementType: 'geometry',
+      stylers: [{color: '#dfd2ae'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'geometry.fill',
+      stylers: [{color: '#b9d3c2'}]
+    },
+    {
+      featureType: 'water',
+      elementType: 'labels.text.fill',
+      stylers: [{color: '#92998d'}]
+    }
+  ],
+  {name: 'Styled Map'});
+
+		
+
+	function initMap() {
+		var mapOptions = {
+			zoom: 8,
+			center: new google.maps.LatLng(47.72959488759143, 19.02776977281001),
+			// Ez szedi ki a menüelemeket a honlapról
+			// disableDefaultUI: true,
+			// styles: mapstyle
+			// mapTypeControlOptions: {
+			//   mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+			//           'styled_map']
+			mapTypeControlOptions: {
+			mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+					'styled_map']
+			}
+        }
+
+
+
+		var mapElement = document.getElementById('map');
+		map = new google.maps.Map(mapElement, mapOptions);
+
+		map.mapTypes.set('styled_map', styledMapType);
+        map.setMapTypeId('styled_map');
+
+	}
+
+	function clearItems(markers,polylines,heatmap){
+		if (markers.length > 0) {
+				markers.forEach(function(item){
+				item.setMap(null);
+			});	
+		}
+		if (polylines.length > 0) {
+				polylines.forEach(function(item){
+				item.setMap(null);
+			});
+		}
+
+		if (heatmap) {
+			//Ennen a működése kérdőjeles
+			heatmap.setMap(heatmap.getMap() ? null : map);
+		}
+	}
+	function setMapItems(){
+		$.ajax({
 		type: "POST",
 		url: '/search/structured',
 		data: {
@@ -34,10 +196,11 @@
 		success: function(resp, status, jqXHR){
 			console.log(resp)
 			if(resp.success && resp.data.length > 0){
+				clearItems(markers,polylines,heatmap);
 				var center = {lat: 0, lon: 0};
 				var heatmapData = [];
-				var markers = [];
-				var polylines = [];
+				markers = [];
+				polylines = [];
 				for(var devId in resp.data){
 					let path = [];
 					resp.data[devId].positions.forEach(function(pos){
@@ -62,11 +225,11 @@
 				center.lat = center.lat/ heatmapData.length;
 				center.lon = center.lon / heatmapData.length;
 				console.log(center)
-				map = new google.maps.Map(document.getElementById('map'), {
-				  center: new google.maps.LatLng(center.lat, center.lon),
-				  zoom: 13,
-				  mapTypeId: 'satellite'
-				});
+				// map = new google.maps.Map(document.getElementById('map'), {
+				//   center: new google.maps.LatLng(center.lat, center.lon),
+				//   zoom: 13,
+				//   mapTypeId: 'satellite'
+				// });
 				
 				polylines.forEach(function(item){
 					item.setMap(map);
@@ -75,15 +238,33 @@
 					item.setMap(map);
 				});
 
-				var heatmap = new google.maps.visualization.HeatmapLayer({
+				heatmap = new google.maps.visualization.HeatmapLayer({
 				  data: heatmapData
 				});
 				heatmap.setMap(map);
+
+				//Ide megoldani, hogy Zoomoljon a középpontra (boundinggal)
+				map.setCenter({lat:center.lat, lng:center.lon});
+
+				zoomFrom = 8;
+				zoomTo = 14;
+
+				setTimeout(function(){
+					var i = zoomFrom;
+					var interval = setInterval(function(){ 
+						if (i == zoomTo) clearInterval(interval);
+							map.setZoom(i);
+							i++;
+						}, 
+						100);
+				}, 200);
 			}
 		}
 	  })
+	}
 
-      }
+
+      
     </script>
     <script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyB-K78ab9peD-QQomR8t5ZpuAWbpnbSAM4&callback=initMap&libraries=visualization"
     async defer></script>
