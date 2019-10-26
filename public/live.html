@@ -15,27 +15,58 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    
     <link rel="stylesheet" href="animate.css">
-
+    <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="style.css">
-    <title>Live - Trackimal - LI</title>
+    <title>LI - Trackimal</title>
 </head>
 
 <body>
-    <div class="main-menu bg-dark d-flex flex-row shadow animated slideInDown">
-        <div class="logo"><img class="logo" src="images/li_logo.svg" alt="Lorem Ipsum logo"></div>
-        <div class="flex-grow-1"></div>
-        <div class="controls d-flex flex-row">
-            <div class="menu-item mr-3">Home</div>
-            <div class="menu-item mr-3 active">Live</div>
-            <div class="menu-item mr-3">History</div>
-            <div class="menu-item mr-3">Create</div>
+
+<div class="header d-flex justify-content-between">
+    <div class="d-flex align-items-center">
+        <img class="logo" src="images/li_logo.svg" alt="Lorem Ipsum logo">
+        <span class="project-name">Trackimal</span>
+    </div>
+    <div class="d-flex">
+        <div class="nav-item d-flex align-items-center">
+            <a href="#">Historical</a>
+        </div>
+        <div class="nav-item d-flex align-items-center">
+            <a href="#">Online</a>
+        </div>
+        <div class="nav-item d-flex align-items-center">
+            Region<div class="arrow-down"></div>
+        </div>
+    </div>
+</div>
+
+<div class="split-left-online">
+    <div class="counters-container">
+        <div id="counter1" class="counter">
+            <div class="counter-value">110</div>
+            <div class="counter-title">Total sensors</div>
+        </div>
+        <div id="counter2" class="counter">
+            <div class="counter-value">867</div>
+            <div class="counter-title">Data packet in last minute</div>
+        </div>
+        <div id="counter3" class="counter">
+            <div class="counter-value">28</div>
+            <div class="counter-title">Moving animals</div>
         </div>
     </div>
 
+</div>
+
+<div class="split-right-online">
+    <div id="map"></div>
+</div>
+
     <div class="d-flex flex-row h-100">
 
-        <div class="card d-flex flex-column left-container p-3">
+        <!-- <div class="card d-flex flex-column left-container p-3">
             <div class="counter-box d-flex flex-column rounded text-center bg-first m-3 p-2">
                 <div class="counter-value">
                     110
@@ -61,7 +92,7 @@
                 </div>
             </div>
 
-        </div>
+        </div> -->
         <div id="map-container" class="shadow flex-grow-1">
             <div id="map"></div>
 
