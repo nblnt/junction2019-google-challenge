@@ -111,11 +111,26 @@ script{
 /* Split the screen */
 
 .split-left{
-    height: calc(100% - 150px);
+    height: calc(100% - 135px);
     width: 40%;
     position: fixed;
     z-index: 1;
-    top: 70px;
+    top: 55px;
+    left: 0;
+    overflow-x: hidden;
+    /* background-image: url("images/left-bg.png"); */
+    background-color: #fff;
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: cover; 
+}
+
+.split-left-online{
+    height: calc(100% - 55px);
+    width: 40%;
+    position: fixed;
+    z-index: 1;
+    top: 55px;
     left: 0;
     overflow-x: hidden;
     /* background-image: url("images/left-bg.png"); */
@@ -126,14 +141,23 @@ script{
 }
 
 .split-right{
-    height: calc(100% - 150px);
+    height: calc(100% - 135px);
     width: 60%;
     position: fixed;
     z-index: 1;
-    top: 70px;
+    top: 55px;
     right: 0;
     overflow-x: hidden;
-    /* padding: 10px; */
+}
+
+.split-right-online{
+    height: calc(100% - 55px);
+    width: 60%;
+    position: fixed;
+    z-index: 1;
+    top: 55px;
+    right: 0;
+    overflow-x: hidden;
 }
 
 .timeline{
@@ -141,7 +165,7 @@ script{
     bottom: 0;
     width: 100%;
     height: 80px;
-    background-color: fuchsia;
+    background-color: #eaf1fa;
 }
 
 .gray{
@@ -151,7 +175,7 @@ script{
 .header{
     position: fixed;
     padding: 15px 10px;
-    height: 70px;
+    height: 55px;
     width: 100%;
     z-index: 2;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
@@ -205,6 +229,46 @@ script{
 .typepicker-container{
     width: 90%;
     margin: auto;
+}
+
+.counters-container{
+    width: 90%;
+    margin: auto;
+}
+
+.counter{
+    width: 70%;
+    height: 40%;
+    margin: 60px;
+    padding: 30px 10px;
+    border-radius: 15px;
+    -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+    box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
+}
+
+#counter1{
+    background-color: #1b8b00;
+}
+
+#counter2{
+    background-color: #d4e690;
+}
+
+#counter3{
+    background-color: #a2d240;
+}
+
+.counter-value{
+    font-size: 64px;
+    font-weight: 800;
+    text-align: center;
+}
+
+.counter-title{
+    font-size: 28px;
+    font-weight: 600;
+    letter-spacing: -1.8px;
+    text-align: center;
 }
 
 .text-1{

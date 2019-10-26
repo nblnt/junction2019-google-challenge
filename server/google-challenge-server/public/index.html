@@ -189,14 +189,17 @@
 		$.ajax({
 		type: "POST",
 		url: '/search/structured',
-		data: {
+		/*data: {
 			from: 1571954400,
 			to: 1572180000
+		},*/
+		data:{
+			from: 1572118800,
+			to: 1572121200
 		},
 		success: function(resp, status, jqXHR){
 			console.log(resp)
-			if(resp.success && resp.data.length > 0){
-				clearItems(markers,polylines,heatmap);
+			if(resp.success && Object.keys(resp.data).length > 0){
 				var center = {lat: 0, lon: 0};
 				var heatmapData = [];
 				markers = [];
@@ -206,13 +209,14 @@
 					resp.data[devId].positions.forEach(function(pos){
 						center.lat += pos.lat;
 						center.lon += pos.lon;
+						
 						path.push(new google.maps.LatLng(pos.lat, pos.lon));
+						heatmapData.push(new google.maps.LatLng(pos.lat, pos.lon));
 					});
-					heatmapData = heatmapData.concat(path);
 					polylines.push(new google.maps.Polyline({
 					  path: path,
 					  geodesic: true,
-					  strokeColor: '#FFFFFF',
+					  strokeColor: '#000000',
 					  strokeOpacity: 1.0,
 					  strokeWeight: 2
 					}));
