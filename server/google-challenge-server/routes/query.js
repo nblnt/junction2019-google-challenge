@@ -3,7 +3,7 @@ const bigquery = require('../cloud/bigquery');
 const router = express.Router();
 const util = require('util');
 
-router.post('/', (req, res) => {
+router.post('/position', (req, res) => {
     bigquery.listPositions(req.body,function (err,data){
         if(err){
             console.log(err);
