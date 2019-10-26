@@ -183,6 +183,15 @@ script{
     color: #1b8b00;
     font-weight: 700;
     vertical-align: middle;
+    margin: 0 10px;
+}
+
+.nav-item a{
+    color: #1b8b00;
+}
+
+.nav-item a:hover{
+    color: #002801;
 }
 
 .datepicker-container{
