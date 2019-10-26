@@ -133,7 +133,7 @@ script{
     top: 0;
     right: 0;
     overflow-x: hidden;
-    padding: 10px;
+    /* padding: 10px; */
 }
 
 .timeline{
@@ -199,6 +199,11 @@ script{
     margin: auto;
 }
 
+.typepicker-container{
+    width: 90%;
+    margin: auto;
+}
+
 .text-1{
     font-size: 24px;
     font-weight: 800;
@@ -249,4 +254,95 @@ script{
 .datepicker-here:hover{
     -webkit-box-shadow: 0 0 2px rgba(0,0,0,.12), 0 2px 2px rgba(0,0,0,.2);
     box-shadow: 0 0 2px rgba(0,0,0,.12), 0 2px 2px rgba(0,0,0,.2);
+}
+
+.classic_checkbox{
+    width: 110px;
+    font-size:14px;
+    height: 30px;
+    margin:6px;
+    position: relative;
+    background: transparent;
+    display: inline-block;
+}
+
+.classic_checkbox label{
+    width: 28px;
+    height: 28px;
+    cursor: pointer;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: white;
+    border-radius: 5px;
+    border:1px solid #ccc;
+    line-height: 28px;
+    text-indent: 36px;
+    white-space: nowrap;
+}
+
+.classic_checkbox label:after{
+    content: 'L';
+    width: 18px;
+    color:white;
+    text-align: center;
+    line-height: 16px;
+    font-weight: 900;
+    transform:rotateY(180deg) rotateZ(-45deg);
+    height: 18px;
+    position: absolute;
+    text-indent: 0;
+    top: 4px;
+    left: 3px;
+    opacity: 0;
+}
+
+.classic_checkbox input[type=checkbox]{
+    visibility: hidden;
+}
+
+.classic_checkbox input[type=checkbox]:checked + label:after{
+    opacity: 1;
+}
+
+.classic_checkbox input[type=checkbox]:checked + label,
+.classic_checkbox:hover label{
+    border:1px solid #1b8b00;
+}
+
+.classic_checkbox input[type=checkbox]:checked + label{
+    background:#1b8b00;
+}
+
+.classic_checkbox.radio label{
+    border-radius:100%;
+    text-indent: 35px;
+    line-height: 25px;
+}
+
+.classic_checkbox input[type=radio]{
+    visibility: hidden;
+    display: none;
+}
+
+.classic_checkbox input[type=radio]:checked + label:after{
+    opacity: 1;
+}
+
+.classic_checkbox input[type=radio]:checked + label,
+.classic_checkbox:hover label{
+    border:1px solid #1b8b00;
+}
+
+.classic_checkbox input[type=radio]:checked + label{
+    background:#1b8b00;
+}
+
+.classic_checkbox.over{
+    width: 60px;
+    text-align: center;
+}
+
+.classic_checkbox.over label{
+    position: relative;
 }
