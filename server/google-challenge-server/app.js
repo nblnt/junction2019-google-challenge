@@ -22,7 +22,7 @@ app.use('/query', queryRouter);
 app.use('/search', searchRouter);
 app.use('/summary', summaryRouter);
 
-const port = process.env.port || 4000;
+const port = process.env.PORT || 8080;
 app.listen(port);
 console.log(`Google Animal Tracking server listening on port: ${port}`);
 
