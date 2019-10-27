@@ -2,8 +2,78 @@ var map;
 var markers = [];
 var polylines = [];
 var heatmap;
+var zoomFrom = 8;
+var zoomTo = 14;
 
-var styledMapType = new google.maps.StyledMapType(
+var styledMapType;
+
+function checkDatepicker(){
+	var datePickerStart = document.getElementById("datepicker1");
+    if (datePickerStart.value == "") {
+		datePickerStart.style.backgroundImage = "none";
+    }
+    else{
+        datePickerStart.style.backgroundImage = "linear-gradient(to top right, #a2d240, #1b8b00 )";
+        datePickerStart.style.border = "1px solid #1b8b00";
+    }
+	
+	var datePickerEnd = document.getElementById("datepicker2");
+    if (datePickerEnd.value == "") {
+        datePickerEnd.style.backgroundImage = "none";
+    }
+    else{
+        datePickerEnd.style.backgroundImage = "linear-gradient(to top right, #a2d240, #1b8b00 )";
+        datePickerEnd.style.border = "1px solid #1b8b00";
+    }
+}
+function showSpinner(){
+	//TODO
+}
+function hideSpinner(){
+	//TODO
+}
+
+function showHeatMap(){
+	heatmap.setMap(map);
+}
+function hideHeatMap(){
+	heatmap.setMap(null);
+}
+
+function showPath(){
+	polylines.forEach(function(item){
+		item.setMap(map);
+	});
+	markers.forEach(function(item){
+		item.setMap(map);
+	});
+}
+function hidePath(){
+	polylines.forEach(function(item){
+		item.setMap(null);
+	});
+	markers.forEach(function(item){
+		item.setMap(null);
+	});
+}
+
+
+function initMap(){
+			var mapOptions = {
+			zoom: 8,
+			center: new google.maps.LatLng(47.72959488759143, 19.02776977281001),
+			// Ez szedi ki a menüelemeket a honlapról
+			// disableDefaultUI: true,
+			// styles: mapstyle
+			mapTypeControlOptions: {
+			mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
+					'styled_map']
+			}
+        }
+
+		var mapElement = document.getElementById('map');
+		map = new google.maps.Map(mapElement, mapOptions);
+		styledMapType = new google.maps.StyledMapType(
 	[
 	  {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
 	  {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
@@ -115,137 +185,77 @@ var styledMapType = new google.maps.StyledMapType(
 	  }
 	],
 	{name: 'Styled Map'});
-
-function checkDatepicker(){
-	var datePickerStart = document.getElementById("datepicker1");
-    if (datePickerStart.value == "") {
-		datePickerStart.style.backgroundImage = "none";
-    }
-    else{
-        datePickerStart.style.backgroundImage = "linear-gradient(to top right, #a2d240, #1b8b00 )";
-        datePickerStart.style.border = "1px solid #1b8b00";
-    }
-	
-	var datePickerEnd = document.getElementById("datepicker2");
-    if (datePickerEnd.value == "") {
-        datePickerEnd.style.backgroundImage = "none";
-    }
-    else{
-        datePickerEnd.style.backgroundImage = "linear-gradient(to top right, #a2d240, #1b8b00 )";
-        datePickerEnd.style.border = "1px solid #1b8b00";
-    }
-}
-function showSpinner(){
-	//TODO
-}
-function hideSpinner(){
-	//TODO
-}
-
-function initMap(){
-			var mapOptions = {
-			zoom: 8,
-			center: new google.maps.LatLng(47.72959488759143, 19.02776977281001),
-			// Ez szedi ki a menüelemeket a honlapról
-			// disableDefaultUI: true,
-			// styles: mapstyle
-			mapTypeControlOptions: {
-			mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
-					'styled_map']
-			}
-        }
-
-		var mapElement = document.getElementById('map');
-		map = new google.maps.Map(mapElement, mapOptions);
-
 		map.mapTypes.set('styled_map', styledMapType);
         map.setMapTypeId('styled_map');
 }
-function clearMap(){
-	if (markers.length > 0) {
-		markers.forEach(function(item){
-		item.setMap(null);
-	});	
-	}
-	if (polylines.length > 0) {
-			polylines.forEach(function(item){
-			item.setMap(null);
-		});
-	}
-	if (heatmap) {
-		//Ennen a működése kérdőjeles
-		heatmap.setMap(heatmap.getMap() ? null : map);
-	}
 
-	markers = [];
-	polylines = [];
-	heatmap = null;
+function clearMap(){
+		if (markers.length > 0) {
+			markers.forEach(function(item){
+			item.setMap(null);
+		});	
+		}
+		if (polylines.length > 0) {
+				polylines.forEach(function(item){
+				item.setMap(null);
+			});
+		}
+		if (heatmap) {
+			//Ennen a működése kérdőjeles
+			heatmap.setMap(null);
+		}
+
+		markers = [];
+		polylines = [];
+		heatmap = null;
 }
 function showData(data){
 	clearMap();
-	$.ajax({
-		type: "POST",
-		url: '/search/structured',
-		/*data: {
-			from: 1571954400,
-			to: 1572180000
-		},*/
-		data:{
-			from: 1572118800,
-			to: 1572121200
-		},
-		success: function(resp, status, jqXHR){
-			console.log(resp)
-			if(resp.success && Object.keys(resp.data).length > 0){
-				var center = {lat: 0, lon: 0};
-				var heatmapData = [];
-				markers = [];
-				polylines = [];
-				for(var devId in resp.data){
-					let path = [];
-					resp.data[devId].positions.forEach(function(pos){
-						center.lat += pos.lat;
-						center.lon += pos.lon;
-						
-						path.push(new google.maps.LatLng(pos.lat, pos.lon));
-						heatmapData.push(new google.maps.LatLng(pos.lat, pos.lon));
-					});
-					polylines.push(new google.maps.Polyline({
-					  path: path,
-					  geodesic: true,
-					  strokeColor: '#000000',
-					  strokeOpacity: 1.0,
-					  strokeWeight: 2
-					}));
-					markers.push(new google.maps.Marker({
-						position: path[path.length-1],
-						title: devId + '-' + resp.data[devId].group + '-'+ resp.data[devId].species
-					 }));
-				}
+	if(map){
+		var center = {lat: 0, lon: 0};
+		var heatmapData = [];
+		for(var devId in data){
+			let path = [];
+			data[devId].positions.forEach(function(pos){
+				center.lat += pos.lat;
+				center.lon += pos.lon;
+				path.push(new google.maps.LatLng(pos.lat, pos.lon));
+				heatmapData.push(new google.maps.LatLng(pos.lat, pos.lon));
+			});
+			polylines.push(new google.maps.Polyline({
+				path: path,
+				geodesic: true,
+				strokeColor: '#000000',
+				strokeOpacity: 1.0,
+				strokeWeight: 2
+			}));
+			markers.push(new google.maps.Marker({
+				position: path[path.length-1],
+				title: devId + '-' + data[devId].group + '-'+ data[devId].species
+				}));
+			}
+			
+			//TODO - if path enabled
+			showPath();
 				
-				center.lat = center.lat/ heatmapData.length;
-				center.lon = center.lon / heatmapData.length;
-				console.log(center)
+			center.lat = center.lat/ heatmapData.length;
+			center.lon = center.lon / heatmapData.length;
 				
-				polylines.forEach(function(item){
-					item.setMap(map);
-				});
-				markers.forEach(function(item){
-					item.setMap(map);
-				});
+			
 
-				heatmap = new google.maps.visualization.HeatmapLayer({
-				  data: heatmapData
-				});
-				heatmap.setMap(map);
+			heatmap = new google.maps.visualization.HeatmapLayer({
+				data: heatmapData
+			});
+			
+			//TODO - if heatmap enabled
+			showHeatMap();
+			
+			//Ide megoldani, hogy Zoomoljon a középpontra (boundinggal)
+			map.setCenter({lat:center.lat, lng:center.lon});
 
-				//Ide megoldani, hogy Zoomoljon a középpontra (boundinggal)
-				map.setCenter({lat:center.lat, lng:center.lon});
-
-				zoomFrom = 8;
-				zoomTo = 14;
-
-				setTimeout(function(){
+			
+			
+			setTimeout(function(){
 					var i = zoomFrom;
 					var interval = setInterval(function(){ 
 						if (i == zoomTo) clearInterval(interval);
@@ -254,16 +264,15 @@ function showData(data){
 						}, 
 						100);
 				}, 200);
-			}
-		}
-	  })
+				
+	}
 }
 
 function doDeviceQuery(from, to, species){
 	console.log(from, to, species);
 	
 	//TODO - handle species
-	/*showSpinner();
+	showSpinner();
 	$.ajax({
 		type: "POST",
 		url: '/search/structured',
@@ -272,12 +281,12 @@ function doDeviceQuery(from, to, species){
 			to: to
 		},
 		success: function(resp, status, jqXHR){
-			hideSpinner;()
+			hideSpinner();
 			if(resp.success && Object.keys(resp.data).length > 0){
 				showData(resp.data);
 			}
 		}
-	});*/
+	});
 }
 
 function onSearchClick(){
@@ -288,6 +297,6 @@ function onSearchClick(){
 		//TODO - get selectedSpecies
 		var timestampStart = Math.round(new Date(datePickerStart.value) / 1000);
 		var timestampEnd = Math.round(new Date(datePickerEnd.value) / 1000);
-		doDeviceQuery(timestampStart,timstampEnd, selectedSpecies);
+		doDeviceQuery(timestampStart,timestampEnd, selectedSpecies);
 	}
 }
