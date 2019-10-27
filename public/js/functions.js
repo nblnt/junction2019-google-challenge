@@ -2,10 +2,9 @@ var map;
 var markers = [];
 var polylines = [];
 var heatmap;
-var zoomFrom = 8;
-var zoomTo = 14;
 var lastData = {};
 var intervals = [];
+var infoWindowVisible = false;
 
 var styledMapType;
 
@@ -74,6 +73,31 @@ function togglePath(element){
 	else{
 		hidePath();
 	} 
+}
+
+function createMarker(position, infoWindowContent, markerImg){
+	var marker = new google.maps.Marker({
+		position: position,
+		map: map,
+		icon: markerImg,
+		});
+
+	markers.push(marker);
+
+	var infoWindow = new google.maps.InfoWindow({
+		content: infoWindowContent
+		});
+
+	marker.addListener('mouseover', function(){
+		infoWindow.open(map,marker);
+	});
+
+	marker.addListener('mouseout', function(){
+	if (infoWindowVisible == false)
+		{
+			infoWindow.close(map,marker);
+		}
+	});
 }
 
 
@@ -334,10 +358,14 @@ function showData(data){
 				strokeOpacity: 1.0,
 				strokeWeight: 2
 			}));
-			markers.push(new google.maps.Marker({
-				position: path[path.length-1],
-				title: devId + '-' + data[devId].group + '-'+ data[devId].species
-				}));
+
+			createMarker(path[path.length-1], devId + '-' + data[devId].group + '-'+ data[devId].species, 'images/map/infoPoint.png');
+
+
+			// markers.push(new google.maps.Marker({
+			// 	position: path[path.length-1],
+			// 	title: devId + '-' + data[devId].group + '-'+ data[devId].species
+			// 	}));
 		}
 
 		map.fitBounds(bounds);
