@@ -4,6 +4,8 @@ var polylines = [];
 var heatmap;
 var zoomFrom = 8;
 var zoomTo = 14;
+var lastData = {};
+var intervals = [];
 
 var styledMapType;
 
@@ -11,7 +13,6 @@ function checkDatepicker(){
 	var datePickerStart = document.getElementById("datepicker1");
     if (datePickerStart.value == "") {
 		datePickerStart.style.backgroundImage = "none";
-		datePickerStart.style.border = "1px solid #bebebe";
     }
     else{
         datePickerStart.style.backgroundImage = "linear-gradient(to top right, #a2d240, #1b8b00 )";
@@ -20,8 +21,7 @@ function checkDatepicker(){
 	
 	var datePickerEnd = document.getElementById("datepicker2");
     if (datePickerEnd.value == "") {
-		datePickerEnd.style.backgroundImage = "none";
-		datePickerEnd.style.border = "1px solid #bebebe";
+        datePickerEnd.style.backgroundImage = "none";
     }
     else{
         datePickerEnd.style.backgroundImage = "linear-gradient(to top right, #a2d240, #1b8b00 )";
@@ -213,6 +213,7 @@ function clearMap(){
 }
 function showData(data){
 	if(map){
+		
 		var center = {lat: 0, lon: 0};
 		var heatmapData = [];
 
@@ -269,7 +270,17 @@ function doDeviceQuery(from, to, species){
 	
 	//TODO - handle species
 	showSpinner();
-	
+	var onSuccess = function(resp, status, jqXHR){
+		hideSpinner();
+		if(resp.success){
+			clearMap();
+			lastData = resp.data;
+			initTimelineIntervals(from, to);
+			if(Object.keys(resp.data).length > 0){
+				showData(resp.data);	
+			}
+		}
+	};
 	if(!species ||species.length === 0){
 		$.ajax({
 			type: "POST",
@@ -280,15 +291,7 @@ function doDeviceQuery(from, to, species){
 				from: from,
 				to: to
 			}),
-			success: function(resp, status, jqXHR){
-				hideSpinner();
-				if(resp.success){
-					clearMap();
-					if(Object.keys(resp.data).length > 0){
-						showData(resp.data);	
-					}
-				}
-			}
+			success: onSuccess
 		});
 	}
 	else {
@@ -303,15 +306,7 @@ function doDeviceQuery(from, to, species){
 				to: to,
 				species: species
 			}),
-			success: function(resp, status, jqXHR){
-				hideSpinner();
-				if(resp.success){
-					clearMap();
-					if(Object.keys(resp.data).length > 0){
-						showData(resp.data);	
-					}
-				}
-			}
+			success: onSuccess
 		});
 	}
 }
@@ -338,4 +333,77 @@ function onSearchClick(){
 		var timestampEnd = Math.round(new Date(datePickerEnd.value) / 1000);
 		doDeviceQuery(timestampStart,timestampEnd, selectedSpecies);
 	}
+}
+
+function filterData(){
+	//TODO get intervals
+	let selectedIntervals = [];
+	intervals.forEach(function(item){
+		if(item.selected){
+			selectedIntervals.push(item);
+		}
+	})
+	
+	let filterData = {};
+	var inIntervals = function(pos){
+		for(let i in selectedIntervals){
+			if(pos.timestamp >= intervals[i].from && pos.timestamp <= intervals[i].to){
+				return true;
+			}
+		}
+		return false;
+	}
+	for(let i in lastData){
+		let positions = [];
+		lastData[i].positions.forEach(function(pos){
+			if(inIntervals(pos)){
+				positions.push(pos);
+			}
+		});
+		if(positions.length > 0){
+			filterData[i] = {
+				group: lastData[i].group,
+				species: lastData[i].species,
+				positions: positions
+			}
+		}		
+	}
+	
+	clearMap();
+	showData(filterData);
+}
+function initTimelineIntervals(from, to){
+	let diff = Math.round((to-from) / 12);
+	let tmpIntervals = [];
+	let createLabel = function(interval){
+		var fromDate = new Date(interval.from *1000);
+		var toDate = new Date(interval.to *1000);
+		return (fromDate.getMonth()+1)+"."+fromDate.getDate()+" "+fromDate.getHours()+":"+fromDate.getMinutes()+"<br>-<br>"+(toDate.getMonth()+1)+"."+toDate.getDate()+" "+toDate.getHours()+":"+toDate.getMinutes();
+	}
+	for(let i = 0; i< 12; i++){
+		tmpIntervals.push({
+			selected: true,
+			from: from+(i*diff),
+			to: from+((i+1)*diff)
+		})
+		let element = document.getElementById('timeline-interval-'+i);
+		element.classList.remove('interval-active');
+		element.innerHTML = createLabel(tmpIntervals[i]);
+	}
+	intervals = tmpIntervals;
+}
+
+function toggleTimelineInterval(element){
+	let i = parseInt(element.id.split("-")[2]);
+	if(intervals[i]){
+		if(intervals[i].selected){		
+			intervals[i].selected = false;
+			element.classList.add('interval-active');			
+		}
+		else{
+			intervals[i].selected = true;
+			element.classList.remove('interval-active');
+		}
+	}
+	filterData();
 }
