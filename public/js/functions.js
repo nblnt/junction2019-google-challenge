@@ -11,6 +11,7 @@ function checkDatepicker(){
 	var datePickerStart = document.getElementById("datepicker1");
     if (datePickerStart.value == "") {
 		datePickerStart.style.backgroundImage = "none";
+		datePickerStart.style.border = "1px solid #bebebe";
     }
     else{
         datePickerStart.style.backgroundImage = "linear-gradient(to top right, #a2d240, #1b8b00 )";
@@ -19,7 +20,8 @@ function checkDatepicker(){
 	
 	var datePickerEnd = document.getElementById("datepicker2");
     if (datePickerEnd.value == "") {
-        datePickerEnd.style.backgroundImage = "none";
+		datePickerEnd.style.backgroundImage = "none";
+		datePickerEnd.style.border = "1px solid #bebebe";
     }
     else{
         datePickerEnd.style.backgroundImage = "linear-gradient(to top right, #a2d240, #1b8b00 )";
