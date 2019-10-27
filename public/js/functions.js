@@ -17,7 +17,7 @@ function checkDatepicker(){
         datePickerStart.style.backgroundImage = "linear-gradient(to top right, #a2d240, #1b8b00 )";
         datePickerStart.style.border = "1px solid #1b8b00";
     }
-	
+
 	var datePickerEnd = document.getElementById("datepicker2");
     if (datePickerEnd.value == "") {
 		datePickerEnd.style.backgroundImage = "none";
@@ -195,7 +195,7 @@ function clearMap(){
 		if (markers.length > 0) {
 			markers.forEach(function(item){
 			item.setMap(null);
-		});	
+		});
 		}
 		if (polylines.length > 0) {
 				polylines.forEach(function(item){
@@ -229,8 +229,8 @@ function showData(data){
 				bounds.extend(latLng);
 			});
 
-			
-			
+
+
 			polylines.push(new google.maps.Polyline({
 				path: path,
 				geodesic: true,
@@ -243,33 +243,33 @@ function showData(data){
 				title: devId + '-' + data[devId].group + '-'+ data[devId].species
 				}));
 		}
-		
+
 		map.fitBounds(bounds);
-		
+
 		//TODO - if path enabled
 		showPath();
-				
+
 		center.lat = center.lat/ heatmapData.length;
 		center.lon = center.lon / heatmapData.length;
-				
-			
+
+
 
 		heatmap = new google.maps.visualization.HeatmapLayer({
 			data: heatmapData
 		});
-			
+
 		//TODO - if heatmap enabled
 		showHeatMap();
-				
+
 	}
 }
 
 function doDeviceQuery(from, to, species){
 	console.log(from, to, species);
-	
+
 	//TODO - handle species
 	showSpinner();
-	
+
 	if(!species ||species.length === 0){
 		$.ajax({
 			type: "POST",
@@ -285,14 +285,14 @@ function doDeviceQuery(from, to, species){
 				if(resp.success){
 					clearMap();
 					if(Object.keys(resp.data).length > 0){
-						showData(resp.data);	
+						showData(resp.data);
 					}
 				}
 			}
 		});
 	}
 	else {
-	
+
 		$.ajax({
 			type: "POST",
 			url: '/search/byspecies',
@@ -308,7 +308,7 @@ function doDeviceQuery(from, to, species){
 				if(resp.success){
 					clearMap();
 					if(Object.keys(resp.data).length > 0){
-						showData(resp.data);	
+						showData(resp.data);
 					}
 				}
 			}
@@ -339,3 +339,46 @@ function onSearchClick(){
 		doDeviceQuery(timestampStart,timestampEnd, selectedSpecies);
 	}
 }
+
+$(document).ready(function () {
+    const animFunc = function (i) {
+        //console.log($('#counter' + i + '>.counter-value'));
+        $('#counter' + i + '>.counter-value').each(function () {
+            $(this).prop('Counter', 0).animate({
+                Counter: $(this).text()
+            }, {
+                duration: 1000,
+                easing: 'swing',
+                step: function (now) {
+                    $(this).text(Math.ceil(now));
+                }
+            });
+        })
+    };
+
+    const tickFunc = function () {
+        $.ajax({
+            url: '/summary/countDevices',
+            success: (resp) => {
+                $('#counter1>.counter-value').text(resp.data.toString());
+                animFunc(1);
+            }
+        });
+        $.ajax({
+            url: '/summary/countData',
+            success: (resp) => {
+                $('#counter2>.counter-value').text(resp.data.toString());
+                animFunc(2);
+            }
+        });
+        $.ajax({
+            url: '/summary/currentDevices',
+            success: (resp) => {
+                $('#counter3>.counter-value').text(resp.data.length);
+                animFunc(3);
+            }
+        });
+    };
+    tickFunc();
+    setInterval(tickFunc, 10000);
+});
