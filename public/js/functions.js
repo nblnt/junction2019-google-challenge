@@ -28,11 +28,11 @@ function checkDatepicker(){
         datePickerEnd.style.border = "1px solid #1b8b00";
     }
 }
-function showSpinner(){
-	//TODO
+function showMask(){
+	document.getElementById('darkLayout').style.visibility = "visible";
 }
-function hideSpinner(){
-	//TODO
+function hideMask(){
+	document.getElementById('darkLayout').style.visibility = "hidden";
 }
 
 function showHeatMap(){
@@ -366,9 +366,9 @@ function doDeviceQuery(from, to, species){
 	console.log(from, to, species);
 
 	//TODO - handle species
-	showSpinner();
+	showMask();
 	var onSuccess = function(resp, status, jqXHR){
-		hideSpinner();
+		hideMask();
 		if(resp.success){
 			clearMap();
 			lastData = resp.data;
