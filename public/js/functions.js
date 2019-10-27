@@ -41,6 +41,14 @@ function showHeatMap(){
 function hideHeatMap(){
 	heatmap.setMap(null);
 }
+function toggleHeatMap(element){
+	if(element.checked){
+		showHeatMap();
+	}
+	else{
+		hideHeatMap();
+	} 
+}
 
 function showPath(){
 	polylines.forEach(function(item){
@@ -57,6 +65,15 @@ function hidePath(){
 	markers.forEach(function(item){
 		item.setMap(null);
 	});
+}
+
+function togglePath(element){
+	if(element.checked){
+		showPath();
+	}
+	else{
+		hidePath();
+	} 
 }
 
 
@@ -247,8 +264,9 @@ function showData(data){
 
 		map.fitBounds(bounds);
 
-		//TODO - if path enabled
-		showPath();
+		if(document.getElementById('checkboxJourney').checked){
+			showPath();
+		}
 
 		center.lat = center.lat/ heatmapData.length;
 		center.lon = center.lon / heatmapData.length;
@@ -259,8 +277,9 @@ function showData(data){
 			data: heatmapData
 		});
 
-		//TODO - if heatmap enabled
-		showHeatMap();
+		if(document.getElementById('checkboxHeat').checked){
+			showHeatMap();
+		}	
 
 	}
 }
@@ -316,7 +335,6 @@ function onSearchClick(){
 	var datePickerEnd = document.getElementById("datepicker2");
 	if(datePickerStart.value !== "" && datePickerEnd.value !== ""){
 		var selectedSpecies = [];
-		//TODO - get selectedSpecies
 		if(document.getElementById("checkboxOne").checked){
 			selectedSpecies.push("dog");
 		}
@@ -336,7 +354,6 @@ function onSearchClick(){
 }
 
 function filterData(){
-	//TODO get intervals
 	let selectedIntervals = [];
 	intervals.forEach(function(item){
 		if(item.selected){
@@ -344,10 +361,11 @@ function filterData(){
 		}
 	})
 	
+	console.log(selectedIntervals)
 	let filterData = {};
 	var inIntervals = function(pos){
 		for(let i in selectedIntervals){
-			if(pos.timestamp >= intervals[i].from && pos.timestamp <= intervals[i].to){
+			if(pos.timestamp >= selectedIntervals[i].from && pos.timestamp <= selectedIntervals[i].to){
 				return true;
 			}
 		}
@@ -387,7 +405,7 @@ function initTimelineIntervals(from, to){
 			to: from+((i+1)*diff)
 		})
 		let element = document.getElementById('timeline-interval-'+i);
-		element.classList.remove('interval-active');
+		element.classList.add('interval-active');
 		element.innerHTML = createLabel(tmpIntervals[i]);
 	}
 	intervals = tmpIntervals;
@@ -398,11 +416,11 @@ function toggleTimelineInterval(element){
 	if(intervals[i]){
 		if(intervals[i].selected){		
 			intervals[i].selected = false;
-			element.classList.add('interval-active');			
+			element.classList.remove('interval-active');					
 		}
 		else{
 			intervals[i].selected = true;
-			element.classList.remove('interval-active');
+			element.classList.add('interval-active');
 		}
 	}
 	filterData();
