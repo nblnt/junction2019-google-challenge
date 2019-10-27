@@ -361,12 +361,7 @@ function showData(data){
 			}));
 
 			infoWindowContent = "";
-			if (data[devId].species) {
-				infoWindowContent = 'Specesies: ' + data[devId].species + '<br>Device ID: ' + devId;
-			}
-			else{
-				infoWindowContent = 'Device ID: ' + devId;
-			}
+
 
 			if (data[devId].species) {
 				infoWindowContent+= 'Specesies: ' + data[devId].species + '<br>';
