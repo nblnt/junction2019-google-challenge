@@ -31,8 +31,9 @@ router.use('/countData', (req, res) => {
             res.json({success: true, data: data});
         }
     };
-    let from = Math.round(Date.now() / 1000) - 60;
-    bigquery.listPositions({from: from}, (err, result) => {
+    let now = Math.round(Date.now() / 1000);
+    let from = now - 60;
+    bigquery.listPositions({from: from, to: now}, (err, result) => {
         if (err) {
             callback(err);
         } else {
@@ -51,38 +52,24 @@ router.use('/currentDevices', (req, res) => {
             res.json({success: true, data: data});
         }
     };
-    let from = Math.round(Date.now() / 1000) - 600;
-    //let from = 10000000;
-    let idTimestamps = {};
-    let allRecordFrom = {};
-    bigquery.countDevices({from: from}, (err, result) => {
+    let now = Math.round(Date.now() / 1000);
+    let from = now - 600;
+    bigquery.listPositions({from: from, to: now}, (err, result) => {
         if (err) {
             callback(err);
         } else {
-            idTimestamps = result;
-            bigquery.listPositions({from: from}, (err, result) => {
-                if (err) {
-                    callback(err);
-                } else {
-                    allRecordFrom = result;
-                    let allData = [];
-                    for (let i of idTimestamps) {
-                        if (i.id && i.timestamp) {
-                            let filtered = allRecordFrom.filter(x => x.id === i.id && x.timestamp === i.timestamp);
-                            allData.push({
-                                id: filtered[0].id,
-                                lat: filtered[0].lat,
-                                lon: filtered[0].lon,
-                                timestamp: filtered[0].timestamp
-                            });
-                        }
-                    }
-                    callback(null, allData);
+            let byDevice = {};
+            for(let rec of result){
+                if(!byDevice[rec.id]){
+                    byDevice[rec.id] = rec;
                 }
-            });
+                else if(rec.timestamp > byDevice[rec.id].timestamp){
+                    byDevice[rec.id] = rec;
+                }
+            }
+            callback(null, Object.values(byDevice));
         }
     });
-
 });
 
 router.use('/countMoving', (req, res) => {
@@ -94,8 +81,9 @@ router.use('/countMoving', (req, res) => {
             res.json({success: true, data: data});
         }
     };
-    let from = Math.round(Date.now() / 1000) - 600;
-    bigquery.listPositions({from: from}, (err, result) => {
+    let now = Math.round(Date.now() / 1000);
+    let from = now - 600;
+    bigquery.listPositions({from: from, to: now}, (err, result) => {
         if (err) {
             callback(err);
         } else {
