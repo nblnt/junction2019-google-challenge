@@ -297,7 +297,8 @@ function removeMapItems(){
 //zoom értékei min: 1-től, max:14-ig mehetnek 
 function centerAndZoom(myLat,myLng, zoomFrom, zoomTo){
   map.setCenter({lat:myLat, lng:myLng});
-
+  map.setZoom(zoomFrom);
+  
   setTimeout(function(){
     var i = zoomFrom;
     var interval = setInterval(function(){ 
@@ -443,8 +444,8 @@ var styledMapType = new google.maps.StyledMapType(
   {name: 'Styled Map'});
 
 function myTest(){
-  map.mapTypes.set('styled_map', styledMapType);
-  map.setMapTypeId('styled_map');
+        map.mapTypes.set('styled_map', styledMapType);
+        map.setMapTypeId('styled_map');
 }
 
 
