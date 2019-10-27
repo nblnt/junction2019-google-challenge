@@ -212,10 +212,12 @@ function clearMap(){
 		heatmap = null;
 }
 function showData(data){
-	clearMap();
 	if(map){
 		var center = {lat: 0, lon: 0};
 		var heatmapData = [];
+
+		var bounds = new google.maps.LatLngBounds();
+
 		for(var devId in data){
 			let path = [];
 			data[devId].positions.forEach(function(pos){
@@ -223,7 +225,11 @@ function showData(data){
 				center.lon += pos.lon;
 				path.push(new google.maps.LatLng(pos.lat, pos.lon));
 				heatmapData.push(new google.maps.LatLng(pos.lat, pos.lon));
+				bounds.extends(new google.maps.LatLng(pos.lat, pos.lon));
 			});
+
+			map.fitBounds(bounds);
+			
 			polylines.push(new google.maps.Polyline({
 				path: path,
 				geodesic: true,
@@ -275,20 +281,51 @@ function doDeviceQuery(from, to, species){
 	
 	//TODO - handle species
 	showSpinner();
-	$.ajax({
-		type: "POST",
-		url: '/search/structured',
-		data:{
-			from: from,
-			to: to
-		},
-		success: function(resp, status, jqXHR){
-			hideSpinner();
-			if(resp.success && Object.keys(resp.data).length > 0){
-				showData(resp.data);
+	
+	if(!species ||species.length === 0){
+		$.ajax({
+			type: "POST",
+			url: '/search/structured',
+			dataType: 'json',
+			contentType: 'application/json',
+			data:JSON.stringify({
+				from: from,
+				to: to
+			}),
+			success: function(resp, status, jqXHR){
+				hideSpinner();
+				if(resp.success){
+					clearMap();
+					if(Object.keys(resp.data).length > 0){
+						showData(resp.data);	
+					}
+				}
 			}
-		}
-	});
+		});
+	}
+	else {
+	
+		$.ajax({
+			type: "POST",
+			url: '/search/byspecies',
+			dataType: 'json',
+			contentType: 'application/json',
+			data:JSON.stringify({
+				from: from,
+				to: to,
+				species: species
+			})
+			success: function(resp, status, jqXHR){
+				hideSpinner();
+				if(resp.success){
+					clearMap();
+					if(Object.keys(resp.data).length > 0){
+						showData(resp.data);	
+					}
+				}
+			}
+		});
+	}
 }
 
 function onSearchClick(){
@@ -297,6 +334,18 @@ function onSearchClick(){
 	if(datePickerStart.value !== "" && datePickerEnd.value !== ""){
 		var selectedSpecies = [];
 		//TODO - get selectedSpecies
+		if(document.getElementById("checkboxOne").checked){
+			selectedSpecies.push("dog");
+		}
+		if(document.getElementById("checkboxTwo").checked){
+			selectedSpecies.push("duck");
+		}
+		if(document.getElementById("checkboxThree").checked){
+			selectedSpecies.push("peacock");
+		}
+		if(document.getElementById("checkboxFour").checked){
+			selectedSpecies.push("unicorn");
+		}
 		var timestampStart = Math.round(new Date(datePickerStart.value) / 1000);
 		var timestampEnd = Math.round(new Date(datePickerEnd.value) / 1000);
 		doDeviceQuery(timestampStart,timestampEnd, selectedSpecies);
