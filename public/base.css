@@ -125,6 +125,18 @@ script{
     background-size: cover; 
 }
 
+.dark-layout{
+    height: calc(100% - 135px);
+    width: 40%;
+    position: fixed;
+    z-index: 999;
+    top: 55px;
+    left: 0;
+    overflow-x: hidden;
+    background-color: rgba(0,0,0,0.55);
+    visibility: hidden;
+}
+
 .split-left-online{
     height: calc(100% - 55px);
     width: 40%;
@@ -291,6 +303,22 @@ script{
     width: 90%;
     margin: auto;
 }
+
+/* Spinner */
+.spinner{ margin: 0 auto; width: 70px; position: relative; text-align: center; z-index: 1000;}
+.spinner>div{ position: absolute; width: 16px; height: 16px; -webkit-transform: scale(0); transform: scale(0); margin-left:-30px; border-radius: 100%; display: inline-block; -webkit-animation: sk-bouncedelay 1.4s infinite; -ms-animation: sk-bouncedelay 1.4s infinite;; animation: sk-bouncedelay 1.4s infinite; -webkit-animation-delay: 0.15s; animation-delay: 0.15s; }
+.spinner>.spinner__item2{ -webkit-animation-delay: 0.30s; animation-delay: 0.30s; margin-left:-10px; }
+.spinner>.spinner__item3{ -webkit-animation-delay: 0.45s; animation-delay: 0.45s; margin-left: 10px; }
+.spinner>.spinner__item4{ -webkit-animation-delay: 0.60s; animation-delay: 0.60s; margin-left: 30px; }
+@-webkit-keyframes sk-bouncedelay{ 0%, 80%, 100%{ -webkit-transform: scale(0); transform: scale(0); } 40%{ -webkit-transform: scale(1); transform: scale(1); } }
+@keyframes sk-bouncedelay{ 0%, 80%, 100%{ -webkit-transform: scale(0); transform: scale(0); } 40%{ -webkit-transform: scale(1); transform: scale(1); } }
+.v-center,.v-center-mb{ top:50%; position: relative; will-change: transform; -webkit-transform: translateY(-50%); -moz-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); }
+    @media only screen and (max-width: 992px){
+        .v-normal-mobile,.v-normal-mb{ top:0% !important; padding-top:15px !important; padding-bottom:15px !important; position: relative; -webkit-transform: translateY(0%) !important; -moz-transform: translateY(0) !important; -ms-transform: translateY(0%) !important; transform: translateY(0%) !important; }
+        .v-center-mb{ padding-top:0 !important; padding-bottom:0 !important; }
+    }
+.bs-sm,.bs-sm-hover:hover,.bs-sm-focus:focus{ box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.1) !important;}
+.bg-dark3,.bg-dark3-hover:hover{background-color:#111 !important;}
 
 .counters-container{
     width: 90%;

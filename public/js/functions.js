@@ -28,11 +28,11 @@ function checkDatepicker(){
         datePickerEnd.style.border = "1px solid #1b8b00";
     }
 }
-function showSpinner(){
-	//TODO
+function showMask(){
+	document.getElementById('darkLayout').style.visibility = "visible";
 }
-function hideSpinner(){
-	//TODO
+function hideMask(){
+	document.getElementById('darkLayout').style.visibility = "hidden";
 }
 
 function showHeatMap(){
@@ -40,6 +40,14 @@ function showHeatMap(){
 }
 function hideHeatMap(){
 	heatmap.setMap(null);
+}
+function toggleHeatMap(element){
+	if(element.checked){
+		showHeatMap();
+	}
+	else{
+		hideHeatMap();
+	}
 }
 
 function showPath(){
@@ -59,13 +67,22 @@ function hidePath(){
 	});
 }
 
+function togglePath(element){
+	if(element.checked){
+		showPath();
+	}
+	else{
+		hidePath();
+	}
+}
+
 
 function initMap(){
 			var mapOptions = {
 			zoom: 8,
 			center: new google.maps.LatLng(47.72959488759143, 19.02776977281001),
 			// Ez szedi ki a menüelemeket a honlapról
-			// disableDefaultUI: true,
+			disableDefaultUI: true,
 			// styles: mapstyle
 			mapTypeControlOptions: {
 			mapTypeIds: ['roadmap', 'satellite', 'hybrid', 'terrain',
@@ -76,119 +93,197 @@ function initMap(){
 		var mapElement = document.getElementById('map');
 		map = new google.maps.Map(mapElement, mapOptions);
 		styledMapType = new google.maps.StyledMapType(
-	[
-	  {elementType: 'geometry', stylers: [{color: '#ebe3cd'}]},
-	  {elementType: 'labels.text.fill', stylers: [{color: '#523735'}]},
-	  {elementType: 'labels.text.stroke', stylers: [{color: '#f5f1e6'}]},
-	  {
-		featureType: 'administrative',
-		elementType: 'geometry.stroke',
-		stylers: [{color: '#c9b2a6'}]
-	  },
-	  {
-		featureType: 'administrative.land_parcel',
-		elementType: 'geometry.stroke',
-		stylers: [{color: '#dcd2be'}]
-	  },
-	  {
-		featureType: 'administrative.land_parcel',
-		elementType: 'labels.text.fill',
-		stylers: [{color: '#ae9e90'}]
-	  },
-	  {
-		featureType: 'landscape.natural',
-		elementType: 'geometry',
-		stylers: [{color: '#dfd2ae'}]
-	  },
-	  {
-		featureType: 'poi',
-		elementType: 'geometry',
-		stylers: [{color: '#dfd2ae'}]
-	  },
-	  {
-		featureType: 'poi',
-		elementType: 'labels.text.fill',
-		stylers: [{color: '#93817c'}]
-	  },
-	  {
-		featureType: 'poi.park',
-		elementType: 'geometry.fill',
-		stylers: [{color: '#a5b076'}]
-	  },
-	  {
-		featureType: 'poi.park',
-		elementType: 'labels.text.fill',
-		stylers: [{color: '#447530'}]
-	  },
-	  {
-		featureType: 'road',
-		elementType: 'geometry',
-		stylers: [{color: '#f5f1e6'}]
-	  },
-	  {
-		featureType: 'road.arterial',
-		elementType: 'geometry',
-		stylers: [{color: '#fdfcf8'}]
-	  },
-	  {
-		featureType: 'road.highway',
-		elementType: 'geometry',
-		stylers: [{color: '#f8c967'}]
-	  },
-	  {
-		featureType: 'road.highway',
-		elementType: 'geometry.stroke',
-		stylers: [{color: '#e9bc62'}]
-	  },
-	  {
-		featureType: 'road.highway.controlled_access',
-		elementType: 'geometry',
-		stylers: [{color: '#e98d58'}]
-	  },
-	  {
-		featureType: 'road.highway.controlled_access',
-		elementType: 'geometry.stroke',
-		stylers: [{color: '#db8555'}]
-	  },
-	  {
-		featureType: 'road.local',
-		elementType: 'labels.text.fill',
-		stylers: [{color: '#806b63'}]
-	  },
-	  {
-		featureType: 'transit.line',
-		elementType: 'geometry',
-		stylers: [{color: '#dfd2ae'}]
-	  },
-	  {
-		featureType: 'transit.line',
-		elementType: 'labels.text.fill',
-		stylers: [{color: '#8f7d77'}]
-	  },
-	  {
-		featureType: 'transit.line',
-		elementType: 'labels.text.stroke',
-		stylers: [{color: '#ebe3cd'}]
-	  },
-	  {
-		featureType: 'transit.station',
-		elementType: 'geometry',
-		stylers: [{color: '#dfd2ae'}]
-	  },
-	  {
-		featureType: 'water',
-		elementType: 'geometry.fill',
-		stylers: [{color: '#b9d3c2'}]
-	  },
-	  {
-		featureType: 'water',
-		elementType: 'labels.text.fill',
-		stylers: [{color: '#92998d'}]
-	  }
-	],
-	{name: 'Styled Map'});
+			[
+				{
+					"featureType": "all",
+					"elementType": "labels",
+					"stylers": [
+						{
+							"visibility": "off"
+						}
+					]
+				},
+				{
+					"featureType": "administrative",
+					"elementType": "all",
+					"stylers": [
+						{
+							"visibility": "off"
+						},
+						{
+							"color": "#efebe2"
+						}
+					]
+				},
+				{
+					"featureType": "landscape",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#efebe2"
+						}
+					]
+				},
+				{
+					"featureType": "poi",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#efebe2"
+						}
+					]
+				},
+				{
+					"featureType": "poi.attraction",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#efebe2"
+						}
+					]
+				},
+				{
+					"featureType": "poi.business",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#efebe2"
+						}
+					]
+				},
+				{
+					"featureType": "poi.government",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#dfdcd5"
+						}
+					]
+				},
+				{
+					"featureType": "poi.medical",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#dfdcd5"
+						}
+					]
+				},
+				{
+					"featureType": "poi.park",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#bad294"
+						}
+					]
+				},
+				{
+					"featureType": "poi.place_of_worship",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#efebe2"
+						}
+					]
+				},
+				{
+					"featureType": "poi.school",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#efebe2"
+						}
+					]
+				},
+				{
+					"featureType": "poi.sports_complex",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#efebe2"
+						}
+					]
+				},
+				{
+					"featureType": "road.highway",
+					"elementType": "geometry.fill",
+					"stylers": [
+						{
+							"color": "#ffffff"
+						}
+					]
+				},
+				{
+					"featureType": "road.highway",
+					"elementType": "geometry.stroke",
+					"stylers": [
+						{
+							"visibility": "off"
+						}
+					]
+				},
+				{
+					"featureType": "road.arterial",
+					"elementType": "geometry.fill",
+					"stylers": [
+						{
+							"color": "#ffffff"
+						}
+					]
+				},
+				{
+					"featureType": "road.arterial",
+					"elementType": "geometry.stroke",
+					"stylers": [
+						{
+							"visibility": "off"
+						}
+					]
+				},
+				{
+					"featureType": "road.local",
+					"elementType": "geometry.fill",
+					"stylers": [
+						{
+							"color": "#fbfbfb"
+						}
+					]
+				},
+				{
+					"featureType": "road.local",
+					"elementType": "geometry.stroke",
+					"stylers": [
+						{
+							"visibility": "off"
+						}
+					]
+				},
+				{
+					"featureType": "transit",
+					"elementType": "all",
+					"stylers": [
+						{
+							"visibility": "off"
+						}
+					]
+				},
+				{
+					"featureType": "water",
+					"elementType": "all",
+					"stylers": [
+						{
+							"color": "#a5d7e0"
+						}
+					]
+				}
+			],
+		{name: 'Nature'});
+
 		map.mapTypes.set('styled_map', styledMapType);
-        map.setMapTypeId('styled_map');
+		map.setMapTypeId('styled_map');
+
+
 }
 
 function clearMap(){
@@ -247,8 +342,9 @@ function showData(data){
 
 		map.fitBounds(bounds);
 
-		//TODO - if path enabled
-		showPath();
+		if(document.getElementById('checkboxJourney').checked){
+			showPath();
+		}
 
 		center.lat = center.lat/ heatmapData.length;
 		center.lon = center.lon / heatmapData.length;
@@ -259,8 +355,9 @@ function showData(data){
 			data: heatmapData
 		});
 
-		//TODO - if heatmap enabled
-		showHeatMap();
+		if(document.getElementById('checkboxHeat').checked){
+			showHeatMap();
+		}
 
 	}
 }
@@ -326,9 +423,9 @@ function doDeviceQuery(from, to, species){
 	console.log(from, to, species);
 
 	//TODO - handle species
-	showSpinner();
+	showMask();
 	var onSuccess = function(resp, status, jqXHR){
-		hideSpinner();
+		hideMask();
 		if(resp.success){
 			clearMap();
 			lastData = resp.data;
@@ -402,7 +499,6 @@ function onSearchClick(){
 	var datePickerEnd = document.getElementById("datepicker2");
 	if(datePickerStart.value !== "" && datePickerEnd.value !== ""){
 		var selectedSpecies = [];
-		//TODO - get selectedSpecies
 		if(document.getElementById("checkboxOne").checked){
 			selectedSpecies.push("dog");
 		}
@@ -422,7 +518,6 @@ function onSearchClick(){
 }
 
 function filterData(){
-	//TODO get intervals
 	let selectedIntervals = [];
 	intervals.forEach(function(item){
 		if(item.selected){
@@ -430,10 +525,11 @@ function filterData(){
 		}
 	})
 
+	console.log(selectedIntervals)
 	let filterData = {};
 	var inIntervals = function(pos){
 		for(let i in selectedIntervals){
-			if(pos.timestamp >= intervals[i].from && pos.timestamp <= intervals[i].to){
+			if(pos.timestamp >= selectedIntervals[i].from && pos.timestamp <= selectedIntervals[i].to){
 				return true;
 			}
 		}
@@ -473,7 +569,7 @@ function initTimelineIntervals(from, to){
 			to: from+((i+1)*diff)
 		})
 		let element = document.getElementById('timeline-interval-'+i);
-		element.classList.remove('interval-active');
+		element.classList.add('interval-active');
 		element.innerHTML = createLabel(tmpIntervals[i]);
 	}
 	intervals = tmpIntervals;
@@ -484,11 +580,11 @@ function toggleTimelineInterval(element){
 	if(intervals[i]){
 		if(intervals[i].selected){
 			intervals[i].selected = false;
-			element.classList.add('interval-active');
+			element.classList.remove('interval-active');
 		}
 		else{
 			intervals[i].selected = true;
-			element.classList.remove('interval-active');
+			element.classList.add('interval-active');
 		}
 	}
 	filterData();
