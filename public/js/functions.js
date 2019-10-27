@@ -497,9 +497,7 @@ function doOnlineDeviceQuery(from, to) {
 	console.log(from, to);
 
 	//TODO - handle species
-	showSpinner();
 	var onSuccess = function(resp, status, jqXHR){
-		hideSpinner();
 		if(resp.success){
 			clearMap();
 			lastData = resp.data;
