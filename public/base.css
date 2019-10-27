@@ -305,7 +305,7 @@ script{
 }
 
 /* Spinner */
-.spinner{ margin: 0 auto; width: 70px; position: relative; text-align: center; z-index: 1000; visibility: hidden;}
+.spinner{ margin: 0 auto; width: 70px; position: relative; text-align: center; z-index: 1000;}
 .spinner>div{ position: absolute; width: 16px; height: 16px; -webkit-transform: scale(0); transform: scale(0); margin-left:-30px; border-radius: 100%; display: inline-block; -webkit-animation: sk-bouncedelay 1.4s infinite; -ms-animation: sk-bouncedelay 1.4s infinite;; animation: sk-bouncedelay 1.4s infinite; -webkit-animation-delay: 0.15s; animation-delay: 0.15s; }
 .spinner>.spinner__item2{ -webkit-animation-delay: 0.30s; animation-delay: 0.30s; margin-left:-10px; }
 .spinner>.spinner__item3{ -webkit-animation-delay: 0.45s; animation-delay: 0.45s; margin-left: 10px; }
