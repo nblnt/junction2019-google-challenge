@@ -59,6 +59,7 @@ function doDeviceQuery(from, to, species){
 			}
 		}
 	});*/
+}
 
 function onSearchClick(){
 	var datePickerStart = document.getElementById("datepicker1");
@@ -71,6 +72,3 @@ function onSearchClick(){
 		doDeviceQuery(timestampStart,timstampEnd, selectedSpecies);
 	}
 }
-
-
-
