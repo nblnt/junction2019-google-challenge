@@ -294,13 +294,16 @@ script{
 
 .counters-container{
     width: 90%;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .counter{
     width: 70%;
     height: 40%;
-    margin: 36px auto;
+    margin: 28px auto;
     padding: 10px 10px 24px 10px;
     border-radius: 15px;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
@@ -309,6 +312,7 @@ script{
 
 #counter1{
     background-color: #1b8b00;
+    margin-top: 20px;
 }
 
 #counter2{
@@ -317,6 +321,7 @@ script{
 
 #counter3{
     background-color: #a2d240;
+    margin-bottom: 20px;
 }
 
 .counter-value{
