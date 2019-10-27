@@ -15,7 +15,7 @@
 
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
         integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
-    
+
     <link rel="stylesheet" href="animate.css">
     <link rel="stylesheet" href="base.css">
     <link rel="stylesheet" href="style.css">
@@ -45,15 +45,15 @@
 <div class="split-left-online">
     <div class="counters-container">
         <div id="counter1" class="counter">
-            <div class="counter-value">110</div>
+            <div class="counter-value">0</div>
             <div class="counter-title">Total sensors</div>
         </div>
         <div id="counter2" class="counter">
-            <div class="counter-value">867</div>
+            <div class="counter-value">0</div>
             <div class="counter-title">Data packet in last minute</div>
         </div>
         <div id="counter3" class="counter">
-            <div class="counter-value">28</div>
+            <div class="counter-value">0</div>
             <div class="counter-title">Moving animals</div>
         </div>
     </div>
@@ -112,7 +112,7 @@
     <script>
         // Initialize and add the map
         function initMap() {
-            // The location of Uluru , 
+            // The location of Uluru ,
             var uluru = { lat: 47.475151, lng: 19.097393 };
             // The map, centered at Uluru
             var map = new google.maps.Map(
@@ -122,20 +122,7 @@
         }
     </script>
 
-    <script>
-        $(document).ready(function () {
-            $('.counter-value').each(function () {
-                $(this).prop('Counter', 0).animate({
-                    Counter: $(this).text()
-                }, {
-                    duration: 1000,
-                    easing: 'swing',
-                    step: function (now) {
-                        $(this).text(Math.ceil(now));
-                    }
-                });
-            });
-        });
+    <script src="js/functions.js">
     </script>
 
     <script async defer
