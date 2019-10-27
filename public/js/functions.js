@@ -408,63 +408,6 @@ function showData(data){
 	}
 }
 
-function showOnlineData(data) {
-	if(map){
-
-		var center = {lat: 0, lon: 0};
-		var heatmapData = [];
-
-		var bounds = new google.maps.LatLngBounds();
-
-		for(var i of data){
-			let path = [];
-			center.lat += i.lat;
-			center.lon += i.lon;
-			var latLng = new google.maps.LatLng(i.lat, i.lon);
-			path.push(latLng);
-			heatmapData.push(latLng);
-			bounds.extend(latLng);
-			// data[devId].positions.forEach(function(pos){
-			// 	center.lat += pos.lat;
-			// 	center.lon += pos.lon;
-			// 	var latLng = new google.maps.LatLng(pos.lat, pos.lon);
-			// 	path.push(latLng);
-			// 	heatmapData.push(latLng);
-			// 	bounds.extend(latLng);
-			// });
-
-
-
-			// polylines.push(new google.maps.Polyline({
-			// 	path: path,
-			// 	geodesic: true,
-			// 	strokeColor: '#000000',
-			// 	strokeOpacity: 1.0,
-			// 	strokeWeight: 2
-			// }));
-			markers.push(new google.maps.Marker({
-				position: path[path.length-1]
-				//,title: devId + '-' + data[devId].group + '-'+ data[devId].species
-			}));
-		}
-
-		//map.fitBounds(bounds);
-
-		//TODO - if path enabled
-		showPath();
-
-		center.lat = center.lat/ heatmapData.length;
-		center.lon = center.lon / heatmapData.length;
-
-		heatmap = new google.maps.visualization.HeatmapLayer({
-			data: heatmapData
-		});
-
-		//TODO - if heatmap enabled
-		showHeatMap();
-	}
-}
-
 function doDeviceQuery(from, to, species){
 	console.log(from, to, species);
 
@@ -509,33 +452,6 @@ function doDeviceQuery(from, to, species){
 			success: onSuccess
 		});
 	}
-}
-
-function doOnlineDeviceQuery(from, to) {
-	console.log(from, to);
-
-	//TODO - handle species
-	var onSuccess = function(resp, status, jqXHR){
-		if(resp.success){
-			clearMap();
-			lastData = resp.data;
-			//initTimelineIntervals(from, to);
-			if(Object.keys(resp.data).length > 0){
-				showOnlineData(resp.data);
-			}
-		}
-	};
-	$.ajax({
-		type: "POST",
-		url: '/summary/currentdevices',
-		dataType: 'json',
-		contentType: 'application/json',
-		// data:JSON.stringify({
-		// 	from: from,
-		// 	to: to
-		// }),
-		success: onSuccess
-	});
 }
 
 function onSearchClick(){
@@ -633,51 +549,4 @@ function toggleTimelineInterval(element){
 	}
 	filterData();
 }
-$(document).ready(function () {
-    const animFunc = function (i) {
-        //console.log($('#counter' + i + '>.counter-value'));
-        $('#counter' + i + '>.counter-value').each(function () {
-            $(this).prop('Counter', 0).animate({
-                Counter: $(this).text()
-            }, {
-                duration: 1000,
-                easing: 'swing',
-                step: function (now) {
-                    $(this).text(Math.ceil(now));
-                }
-            });
-        })
-    };
 
-    const tickFunc = function () {
-    	// map start
-		let intervalEnd = Math.round(Date.now() / 1000);
-		let intervalStart = /*intervalEnd - 60000;*/1500000000;
-		doOnlineDeviceQuery(intervalStart, intervalEnd);
-		// map end
-
-        $.ajax({
-            url: '/summary/countDevices',
-            success: (resp) => {
-                $('#counter1>.counter-value').text(resp.data.toString());
-                animFunc(1);
-            }
-        });
-        $.ajax({
-            url: '/summary/countData',
-            success: (resp) => {
-                $('#counter2>.counter-value').text(resp.data.toString());
-                animFunc(2);
-            }
-        });
-        $.ajax({
-            url: '/summary/currentDevices',
-            success: (resp) => {
-                $('#counter3>.counter-value').text(resp.data.length);
-                animFunc(3);
-            }
-        });
-    };
-    tickFunc();
-    setInterval(tickFunc, 10000);
-});
