@@ -5,6 +5,7 @@ var heatmap;
 var lastData = {};
 var intervals = [];
 var infoWindowVisible = false;
+var infoWindowContent;
 
 var styledMapType;
 
@@ -359,7 +360,13 @@ function showData(data){
 				strokeWeight: 2
 			}));
 
-			createMarker(path[path.length-1], devId + '-' + data[devId].group + '-'+ data[devId].species, 'images/map/infoPoint.png');
+			if (data[devId].species) {
+				infoWindowContent = '<h6>Specesies: </h6>' + data[devId].species + '<br>Device ID: ' + devId;
+			}
+			else{
+				infoWindowContent = 'Device ID: ' + devId;
+			}
+			createMarker(path[path.length-1], infoWindowContent, 'images/map/marker-1.png');
 
 
 			// markers.push(new google.maps.Marker({
