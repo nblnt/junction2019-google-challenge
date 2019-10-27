@@ -311,10 +311,9 @@ function showOnlineData(data) {
 			// 	strokeOpacity: 1.0,
 			// 	strokeWeight: 2
 			// }));
-			markers.push(new google.maps.Marker({
-				position: path[path.length-1]
-				//,title: devId + '-' + data[devId].group + '-'+ data[devId].species
-			}));
+			infoWindowContent = 'Device ID: ' + i.id;
+
+			createMarker(path[path.length-1], infoWindowContent, 'images/map/marker-1.png');
 		}
 
 		//map.fitBounds(bounds);
