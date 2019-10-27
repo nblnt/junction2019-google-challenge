@@ -221,12 +221,13 @@ function showData(data){
 			data[devId].positions.forEach(function(pos){
 				center.lat += pos.lat;
 				center.lon += pos.lon;
-				path.push(new google.maps.LatLng(pos.lat, pos.lon));
-				heatmapData.push(new google.maps.LatLng(pos.lat, pos.lon));
-				bounds.extends(new google.maps.LatLng(pos.lat, pos.lon));
+				var latLng = new google.maps.LatLng(pos.lat, pos.lon);
+				path.push(latLng);
+				heatmapData.push(latLng);
+				bounds.extend(latLng);
 			});
 
-			map.fitBounds(bounds);
+			
 			
 			polylines.push(new google.maps.Polyline({
 				path: path,
@@ -239,37 +240,24 @@ function showData(data){
 				position: path[path.length-1],
 				title: devId + '-' + data[devId].group + '-'+ data[devId].species
 				}));
-			}
-			
-			//TODO - if path enabled
-			showPath();
+		}
+		
+		map.fitBounds(bounds);
+		
+		//TODO - if path enabled
+		showPath();
 				
-			center.lat = center.lat/ heatmapData.length;
-			center.lon = center.lon / heatmapData.length;
+		center.lat = center.lat/ heatmapData.length;
+		center.lon = center.lon / heatmapData.length;
 				
 			
 
-			heatmap = new google.maps.visualization.HeatmapLayer({
-				data: heatmapData
-			});
+		heatmap = new google.maps.visualization.HeatmapLayer({
+			data: heatmapData
+		});
 			
-			//TODO - if heatmap enabled
-			showHeatMap();
-			
-			//Ide megoldani, hogy Zoomoljon a középpontra (boundinggal)
-			map.setCenter({lat:center.lat, lng:center.lon});
-
-			
-			
-			setTimeout(function(){
-					var i = zoomFrom;
-					var interval = setInterval(function(){ 
-						if (i == zoomTo) clearInterval(interval);
-							map.setZoom(i);
-							i++;
-						}, 
-						100);
-				}, 200);
+		//TODO - if heatmap enabled
+		showHeatMap();
 				
 	}
 }
@@ -312,7 +300,7 @@ function doDeviceQuery(from, to, species){
 				from: from,
 				to: to,
 				species: species
-			})
+			}),
 			success: function(resp, status, jqXHR){
 				hideSpinner();
 				if(resp.success){
