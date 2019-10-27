@@ -46,7 +46,7 @@ function toggleHeatMap(element){
 	}
 	else{
 		hideHeatMap();
-	} 
+	}
 }
 
 function showPath(){
@@ -72,7 +72,7 @@ function togglePath(element){
 	}
 	else{
 		hidePath();
-	} 
+	}
 }
 
 function createMarker(position, infoWindowContent, markerImg){
@@ -306,7 +306,7 @@ function initMap(){
 
 		map.mapTypes.set('styled_map', styledMapType);
 		map.setMapTypeId('styled_map');
-		
+
 
 }
 
@@ -332,7 +332,7 @@ function clearMap(){
 }
 function showData(data){
 	if(map){
-		
+
 		var center = {lat: 0, lon: 0};
 		var heatmapData = [];
 
@@ -385,8 +385,65 @@ function showData(data){
 
 		if(document.getElementById('checkboxHeat').checked){
 			showHeatMap();
-		}	
+		}
 
+	}
+}
+
+function showOnlineData(data) {
+	if(map){
+
+		var center = {lat: 0, lon: 0};
+		var heatmapData = [];
+
+		var bounds = new google.maps.LatLngBounds();
+
+		for(var i of data){
+			let path = [];
+			center.lat += i.lat;
+			center.lon += i.lon;
+			var latLng = new google.maps.LatLng(i.lat, i.lon);
+			path.push(latLng);
+			heatmapData.push(latLng);
+			bounds.extend(latLng);
+			// data[devId].positions.forEach(function(pos){
+			// 	center.lat += pos.lat;
+			// 	center.lon += pos.lon;
+			// 	var latLng = new google.maps.LatLng(pos.lat, pos.lon);
+			// 	path.push(latLng);
+			// 	heatmapData.push(latLng);
+			// 	bounds.extend(latLng);
+			// });
+
+
+
+			// polylines.push(new google.maps.Polyline({
+			// 	path: path,
+			// 	geodesic: true,
+			// 	strokeColor: '#000000',
+			// 	strokeOpacity: 1.0,
+			// 	strokeWeight: 2
+			// }));
+			markers.push(new google.maps.Marker({
+				position: path[path.length-1]
+				//,title: devId + '-' + data[devId].group + '-'+ data[devId].species
+			}));
+		}
+
+		//map.fitBounds(bounds);
+
+		//TODO - if path enabled
+		showPath();
+
+		center.lat = center.lat/ heatmapData.length;
+		center.lon = center.lon / heatmapData.length;
+
+		heatmap = new google.maps.visualization.HeatmapLayer({
+			data: heatmapData
+		});
+
+		//TODO - if heatmap enabled
+		showHeatMap();
 	}
 }
 
@@ -402,7 +459,7 @@ function doDeviceQuery(from, to, species){
 			lastData = resp.data;
 			initTimelineIntervals(from, to);
 			if(Object.keys(resp.data).length > 0){
-				showData(resp.data);	
+				showData(resp.data);
 			}
 		}
 	};
@@ -436,6 +493,35 @@ function doDeviceQuery(from, to, species){
 	}
 }
 
+function doOnlineDeviceQuery(from, to) {
+	console.log(from, to);
+
+	//TODO - handle species
+	showSpinner();
+	var onSuccess = function(resp, status, jqXHR){
+		hideSpinner();
+		if(resp.success){
+			clearMap();
+			lastData = resp.data;
+			//initTimelineIntervals(from, to);
+			if(Object.keys(resp.data).length > 0){
+				showOnlineData(resp.data);
+			}
+		}
+	};
+	$.ajax({
+		type: "POST",
+		url: '/summary/currentdevices',
+		dataType: 'json',
+		contentType: 'application/json',
+		// data:JSON.stringify({
+		// 	from: from,
+		// 	to: to
+		// }),
+		success: onSuccess
+	});
+}
+
 function onSearchClick(){
 	var datePickerStart = document.getElementById("datepicker1");
 	var datePickerEnd = document.getElementById("datepicker2");
@@ -466,7 +552,7 @@ function filterData(){
 			selectedIntervals.push(item);
 		}
 	})
-	
+
 	console.log(selectedIntervals)
 	let filterData = {};
 	var inIntervals = function(pos){
@@ -490,9 +576,9 @@ function filterData(){
 				species: lastData[i].species,
 				positions: positions
 			}
-		}		
+		}
 	}
-	
+
 	clearMap();
 	showData(filterData);
 }
@@ -520,9 +606,9 @@ function initTimelineIntervals(from, to){
 function toggleTimelineInterval(element){
 	let i = parseInt(element.id.split("-")[2]);
 	if(intervals[i]){
-		if(intervals[i].selected){		
+		if(intervals[i].selected){
 			intervals[i].selected = false;
-			element.classList.remove('interval-active');					
+			element.classList.remove('interval-active');
 		}
 		else{
 			intervals[i].selected = true;
@@ -548,6 +634,12 @@ $(document).ready(function () {
     };
 
     const tickFunc = function () {
+    	// map start
+		let intervalEnd = Math.round(Date.now() / 1000);
+		let intervalStart = /*intervalEnd - 60000;*/1500000000;
+		doOnlineDeviceQuery(intervalStart, intervalEnd);
+		// map end
+
         $.ajax({
             url: '/summary/countDevices',
             success: (resp) => {
