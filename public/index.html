@@ -28,12 +28,12 @@
         <div class="d-flex">
             <div class="d-inline-flex align-items-center">
                 <div class="classic_checkbox">
-                    <input type="checkbox" value="checkheat" id="checkboxHeat" name="checkheat"><label for="checkboxHeat"><div class="label">Heat map</div></label>
+                    <input type="checkbox" value="checkheat" id="checkboxHeat" name="checkheat" onchange="toggleHeatMap(this);" checked="checked"><label for="checkboxHeat"><div class="label">Heat map</div></label>
                 </div>
             </div>
             <div class="d-inline-flex align-items-center xxs-ml">
                 <div class="classic_checkbox">
-                    <input type="checkbox" value="checknight" id="checkboxNight" name="checknight"><label for="checkboxNight"><div class="label">Journey map</div></label>
+                    <input type="checkbox" value="checkjourney" id="checkboxJourney" name="checkjourney" onchange="togglePath(this);" checked="checked"><label for="checkboxJourney"><div class="label">Journey map</div></label>
                 </div>
             </div>
         </div>
@@ -117,6 +117,17 @@
     </div>
 
     <button id="searchBtn" class="send-btn" onclick="onSearchClick();">Search</button>
+
+    <div id="darkLayout" class="dark-layout">
+	 <div class="v-center h-center">
+            <div id="spinner" class="spinner">
+                <div class="spinner__item1 bg-dark3"></div>
+                <div class="spinner__item2 bg-dark3"></div>
+                <div class="spinner__item3 bg-dark3"></div>
+                <div class="spinner__item4 bg-dark3"></div>
+            </div>
+        </div>
+	</div>
 
 </div>
 
