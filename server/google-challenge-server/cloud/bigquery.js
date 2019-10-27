@@ -50,12 +50,13 @@ const listPositions = (params, callback) => {
         }
         sep = " AND ";
     }
-    if(sep !== "" || skip){
-        //console.log(query)
-        bigquery.query(query, callback);
+    if(sep === "" || skip){    
+        async.setImmediate(callback,null,[]);
     }
     else{
-        async.setImmediate(callback,null,[]);
+        //console.log(query)
+        bigquery.query(query, callback);
+       
     }
 };
 
@@ -63,6 +64,7 @@ const listGroups = (params, callback) => {
     const table = "juctionxbp2019-loremipsum.animals.groups";
     let query = 'SELECT name, species FROM `'+table+'` WHERE ';
     let sep = "";
+    let skip = false;
     if(params.name){
         if(Array.isArray(params.name)){
             if(params.name.length > 0){
@@ -74,6 +76,9 @@ const listGroups = (params, callback) => {
                 }
                 query += ")";
                 sep = " AND ";
+            }
+            else{
+                skip = true;
             }
         }
         else{
@@ -98,6 +103,9 @@ const listGroups = (params, callback) => {
                 query += ")";
                 sep = " AND ";
             }
+            else {
+                skip = true;
+            }
         }
         else{
             query += sep + "species = "+escape(params.species);
@@ -112,8 +120,14 @@ const listGroups = (params, callback) => {
     if(sep === ""){
         query += " 1 = 1";
     }
-    //console.log(query)
-    bigquery.query(query, callback);
+    
+    if(skip){
+        async.setImmediate(callback, null, []);
+    }
+    else{
+        bigquery.query(query, callback);
+    }
+    
 }
 
 const listDeviceInfos = (params, callback) => {
