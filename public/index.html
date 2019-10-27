@@ -24,15 +24,27 @@
         <img class="logo" src="images/li_logo.svg" alt="Lorem Ipsum logo">
         <span class="project-name">Trackimal</span>
     </div>
+    <div class="map-type-select">
+        <div class="d-flex">
+            <div class="d-inline-flex align-items-center">
+                <div class="classic_checkbox">
+                    <input type="checkbox" value="checkheat" id="checkboxHeat" name="checkheat" onchange="toggleHeatMap(this);" checked="checked"><label for="checkboxHeat"><div class="label">Heat map</div></label>
+                </div>
+            </div>
+            <div class="d-inline-flex align-items-center xxs-ml">
+                <div class="classic_checkbox">
+                    <input type="checkbox" value="checkjourney" id="checkboxJourney" name="checkjourney" onchange="togglePath(this);" checked="checked"><label for="checkboxJourney"><div class="label">Journey map</div></label>
+                </div>
+            </div>
+        </div>
+    </div>
+    
     <div class="d-flex">
-        <div class="nav-item d-flex align-items-center">
-            <a href="#">Historical</a>
+        <div class="nav-item d-flex align-items-center active-nav-item">
+            <a href="#">Historical data</a>
         </div>
         <div class="nav-item d-flex align-items-center">
-            <a href="#">Online</a>
-        </div>
-        <div class="nav-item d-flex align-items-center">
-            Region<div class="arrow-down"></div>
+            <a href="live.html">Online data</a>
         </div>
     </div>
 </div>
@@ -58,7 +70,7 @@
                     <input id='datepicker2' onfocusout="checkDatepicker();" type='text' class='datepicker-here' data-language='en' />
                 </div>
             </div>
-            <div class="row align-items-center xxs-mb">
+            <!-- <div class="row align-items-center xxs-mb">
                 <div class="col-4 align-self-center">
                     <div class="classic_checkbox">
                         <input type="checkbox" value="checkday" id="checkboxDay" name="checkday"><label for="checkboxDay">Daytime</label>
@@ -69,7 +81,7 @@
                         <input type="checkbox" value="checknight" id="checkboxNight" name="checknight"><label for="checkboxNight">Nighttime</label>
                     </div>
                 </div>
-            </div>
+            </div> -->
         </div>
     </div>
 
@@ -105,6 +117,18 @@
     </div>
 
     <button id="searchBtn" class="send-btn" onclick="onSearchClick();">Search</button>
+    <div class="xs-mt">
+        <div class="v-center t-center">
+            <div id="spinner" class="spinner">
+                <div class="spinner__item1 bg-dark3"></div>
+                <div class="spinner__item2 bg-dark3"></div>
+                <div class="spinner__item3 bg-dark3"></div>
+                <div class="spinner__item4 bg-dark3"></div>
+            </div>
+        </div>
+    </div>
+
+    <div id="darkLayout" class="dark-layout"></div>
 
 </div>
 
@@ -114,18 +138,18 @@
 
 <div class="timeline">
     <div class="flex-container">
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
-        <div><a href="#">XX.YY. 00:00<br>-<br>XX.YY. 00:00</a></div>
+        <div id="timeline-interval-0" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-1" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-2" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-3" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-4" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-5" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-6" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-7" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-8" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-9" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-10" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
+        <div id="timeline-interval-11" onclick="toggleTimelineInterval(this);">XX.YY. 00:00<br>-<br>XX.YY. 00:00</div>
     </div>
 </div>
 
