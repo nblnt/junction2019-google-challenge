@@ -165,11 +165,58 @@ script{
     bottom: 0;
     width: 100%;
     height: 80px;
-    background-color: #eaf1fa;
+    background-color: #002801;
 }
 
-.gray{
-    color: #e8e8e8;
+.flex-container {
+    display: flex;
+    flex-wrap: nowrap;
+    border: 1py solid #a2d240;
+}
+
+.flex-container > div {
+    padding: 13px;
+    margin: auto;
+    text-align: center;
+    font-size: 12px;
+    color: #eaf1fa;
+    font-weight: 700;
+    line-height: 1rem;
+    border-left: 1px solid #1b8b00;
+    border-right: 1px solid #1b8b00;
+    border-top: 2px solid #1b8b00;
+    border-bottom: 3px solid #1b8b00;
+    height: 80px;
+    width: calc(100% - 100%/11);
+    cursor: pointer;
+}
+
+.flex-container > div > a {
+    text-align: center;
+    font-size: 12px;
+    color: #eaf1fa;
+    font-weight: 700;
+    line-height: 1rem;
+    text-decoration: none;
+}
+
+.interval-active{
+    background-color: #1b8b00;
+    cursor: none;
+}
+
+.time-line{
+    width: 100%;
+    border: 0.5px solid #eaf1fa;
+    border-radius: 5px;
+}
+
+.timeline-values{
+    width: 95%;
+    margin: auto;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 700;
 }
 
 .header{
@@ -239,8 +286,8 @@ script{
 .counter{
     width: 70%;
     height: 40%;
-    margin: 60px;
-    padding: 30px 10px;
+    margin: 36px auto;
+    padding: 10px 10px 24px 10px;
     border-radius: 15px;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
@@ -315,15 +362,6 @@ script{
     font-family: 'Open Sans', sans-serif !important;
     letter-spacing: -0.8px;
     font-weight: 500;
-    /* background-image: linear-gradient(to top right, #a2d240, #1b8b00 ); */
-}
-
-.datepickers:empty{
-    background-color: none;
-}
-
-.datepickers:not(:empty){
-    background-color: "#1b8b00";
 }
 
 .datepicker-here:hover{
@@ -334,7 +372,7 @@ script{
 #map{
     width: 60%;
     height: 100%;
-    width:100%;
+    width: 100%;
 }
 .classic_checkbox{
     width: 110px;
@@ -424,4 +462,27 @@ script{
 
 .classic_checkbox.over label{
     position: relative;
+}
+
+.send-btn{
+    position: relative;
+    display: block;
+    font-weight: 700;
+    text-transform: uppercase;
+    font-size: 20px;
+    color: #eaf1fa;
+    background-color: #1b8b00;
+    height: 40px;
+    padding: 0 26px;
+    margin: 50px auto 0 auto;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    text-align: center;
+    box-shadow: 0 0 2px rgba(0,0,0,.12), 0 2px 2px rgba(0,0,0,.2);
+    -webkit-box-shadow: 0 0 2px rgba(0,0,0,.12), 0 2px 2px rgba(0,0,0,.2);
+}
+
+.send-btn:hover{
+    background-color: #002801;
 }

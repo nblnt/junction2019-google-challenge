@@ -444,8 +444,10 @@ var styledMapType = new google.maps.StyledMapType(
   {name: 'Styled Map'});
 
 function myTest(){
-        map.mapTypes.set('styled_map', styledMapType);
-        map.setMapTypeId('styled_map');
+        // map.mapTypes.set('styled_map', styledMapType);
+        // map.setMapTypeId('styled_map');
+
+        console.log(map.panToBounds({lat:47.73698975486,lng:19.01146877100167},{lat:47.74616611033,lng:19.018110611447387}));
 }
 
 
