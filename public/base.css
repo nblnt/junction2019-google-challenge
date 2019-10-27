@@ -125,6 +125,18 @@ script{
     background-size: cover; 
 }
 
+.dark-layout{
+    height: calc(100% - 135px);
+    width: 40%;
+    position: fixed;
+    z-index: 999;
+    top: 55px;
+    left: 0;
+    overflow-x: hidden;
+    background-color: rgba(0,0,0,0.55);
+    visibility: hidden;
+}
+
 .split-left-online{
     height: calc(100% - 55px);
     width: 40%;
@@ -229,6 +241,12 @@ script{
     box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
 }
 
+.map-type-select{
+    position: fixed;
+    left: 40%;
+    margin-left: 10px;
+}
+
 .project-name{
     color:#002801;
     font-size: 28px;
@@ -260,8 +278,16 @@ script{
     margin: 0 10px;
 }
 
+.active-nav-item >a{
+    background-color: #a2d240;
+    border-radius: 5px;
+    color: #002801 !important;
+    text-decoration: none;
+}
+
 .nav-item a{
     color: #1b8b00;
+    padding: 5px 10px;
 }
 
 .nav-item a:hover{
@@ -278,15 +304,34 @@ script{
     margin: auto;
 }
 
+/* Spinner */
+.spinner{ margin: 0 auto; width: 70px; position: relative; text-align: center; z-index: 1000; visibility: hidden;}
+.spinner>div{ position: absolute; width: 16px; height: 16px; -webkit-transform: scale(0); transform: scale(0); margin-left:-30px; border-radius: 100%; display: inline-block; -webkit-animation: sk-bouncedelay 1.4s infinite; -ms-animation: sk-bouncedelay 1.4s infinite;; animation: sk-bouncedelay 1.4s infinite; -webkit-animation-delay: 0.15s; animation-delay: 0.15s; }
+.spinner>.spinner__item2{ -webkit-animation-delay: 0.30s; animation-delay: 0.30s; margin-left:-10px; }
+.spinner>.spinner__item3{ -webkit-animation-delay: 0.45s; animation-delay: 0.45s; margin-left: 10px; }
+.spinner>.spinner__item4{ -webkit-animation-delay: 0.60s; animation-delay: 0.60s; margin-left: 30px; }
+@-webkit-keyframes sk-bouncedelay{ 0%, 80%, 100%{ -webkit-transform: scale(0); transform: scale(0); } 40%{ -webkit-transform: scale(1); transform: scale(1); } }
+@keyframes sk-bouncedelay{ 0%, 80%, 100%{ -webkit-transform: scale(0); transform: scale(0); } 40%{ -webkit-transform: scale(1); transform: scale(1); } }
+.v-center,.v-center-mb{ top:50%; position: relative; will-change: transform; -webkit-transform: translateY(-50%); -moz-transform: translateY(-50%); -ms-transform: translateY(-50%); transform: translateY(-50%); }
+    @media only screen and (max-width: 992px){
+        .v-normal-mobile,.v-normal-mb{ top:0% !important; padding-top:15px !important; padding-bottom:15px !important; position: relative; -webkit-transform: translateY(0%) !important; -moz-transform: translateY(0) !important; -ms-transform: translateY(0%) !important; transform: translateY(0%) !important; }
+        .v-center-mb{ padding-top:0 !important; padding-bottom:0 !important; }
+    }
+.bs-sm,.bs-sm-hover:hover,.bs-sm-focus:focus{ box-shadow: 0px 0px 2px 0px rgba(0,0,0,0.1) !important;}
+.bg-dark3,.bg-dark3-hover:hover{background-color:#111 !important;}
+
 .counters-container{
     width: 90%;
-    margin: auto;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: auto;
+    margin-bottom: auto;
 }
 
 .counter{
     width: 70%;
     height: 40%;
-    margin: 36px auto;
+    margin: 28px auto;
     padding: 10px 10px 24px 10px;
     border-radius: 15px;
     -webkit-box-shadow: 0 2px 4px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.2);
@@ -295,6 +340,7 @@ script{
 
 #counter1{
     background-color: #1b8b00;
+    margin-top: 20px;
 }
 
 #counter2{
@@ -303,6 +349,7 @@ script{
 
 #counter3{
     background-color: #a2d240;
+    margin-bottom: 20px;
 }
 
 .counter-value{
@@ -474,7 +521,7 @@ script{
     background-color: #1b8b00;
     height: 40px;
     padding: 0 26px;
-    margin: 50px auto 0 auto;
+    margin: 36px auto 0 auto;
     border: none;
     border-radius: 5px;
     cursor: pointer;
