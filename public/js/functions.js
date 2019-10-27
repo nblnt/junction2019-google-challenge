@@ -214,6 +214,9 @@ function showData(data){
 	if(map){
 		var center = {lat: 0, lon: 0};
 		var heatmapData = [];
+
+		var bounds = new google.maps.LatLngBounds();
+
 		for(var devId in data){
 			let path = [];
 			data[devId].positions.forEach(function(pos){
@@ -221,7 +224,11 @@ function showData(data){
 				center.lon += pos.lon;
 				path.push(new google.maps.LatLng(pos.lat, pos.lon));
 				heatmapData.push(new google.maps.LatLng(pos.lat, pos.lon));
+				bounds.extends(new google.maps.LatLng(pos.lat, pos.lon));
 			});
+
+			map.fitBounds(bounds);
+			
 			polylines.push(new google.maps.Polyline({
 				path: path,
 				geodesic: true,
