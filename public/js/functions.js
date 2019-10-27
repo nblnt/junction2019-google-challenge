@@ -360,12 +360,23 @@ function showData(data){
 				strokeWeight: 2
 			}));
 
+			infoWindowContent = "";
 			if (data[devId].species) {
-				infoWindowContent = '<h6>Specesies: </h6>' + data[devId].species + '<br>Device ID: ' + devId;
+				infoWindowContent = 'Specesies: ' + data[devId].species + '<br>Device ID: ' + devId;
 			}
 			else{
 				infoWindowContent = 'Device ID: ' + devId;
 			}
+
+			if (data[devId].species) {
+				infoWindowContent+= 'Specesies: ' + data[devId].species + '<br>';
+			}
+
+			if (data[devId].species) {
+				infoWindowContent+= 'Groups: ' + data[devId].group + '<br>';
+			}
+			infoWindowContent+= 'Device ID: ' + devId;
+
 			createMarker(path[path.length-1], infoWindowContent, 'images/map/marker-1.png');
 
 
