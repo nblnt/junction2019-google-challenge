@@ -86,14 +86,15 @@ router.use('/structured', (req, res) => {
 
 router.use('/byspecies', (req, res) => {
     let getGroupInfo = (callback) => {
+        console.log(req.body)
         bigquery.listGroups({species: req.body.species},(err, result)=>{
             if(err){
                 callback(err);
             }
             else{
-                let groups = [];
+                let groups = {};
                 for(let rec of result){
-                    groups.push(rec.name);
+                    groups[rec.name] = rec.species;
                 }
                 callback(err, groups);
             }
@@ -101,7 +102,8 @@ router.use('/byspecies', (req, res) => {
     }
     
     let getGroupBindings = (groups, callback) => {
-        bigquery.listDeviceInfos({groupname: groups}, (err, result)=> {
+        console.log(groups)
+        bigquery.listDeviceInfos({groupname: Object.keys(groups) }, (err, result)=> {
             if(err){
                 callback(err);
             }
@@ -112,7 +114,7 @@ router.use('/byspecies', (req, res) => {
                         byDevice[rec.id] = {
                             positions:[],
                             group: rec.groupname,
-                            species: req.body.species
+                            species: groups[rec.groupname]
                         };
                     }
                 }
@@ -127,6 +129,7 @@ router.use('/byspecies', (req, res) => {
             if(err){callback(err);}
             else{
                 for(let rec of result){
+                    
                     byDevice[rec.id].positions.push({lat: rec.lat, lon:rec.lon, timestamp: rec.timestamp});
                 }
                 for(let i in byDevice){
@@ -145,7 +148,6 @@ router.use('/byspecies', (req, res) => {
 
     const callback = (err, data) => {
         if(err){
-            console.log(err);
             res.json({success:false, err: util.format(err)});
         }
         else{
